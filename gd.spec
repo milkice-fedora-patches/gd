@@ -1,7 +1,7 @@
 Summary: A graphics library for quick creation of PNG or JPEG images.
 Name: gd
 Version: 1.8.4
-Release: 8
+Release: 9
 URL: http://www.boutell.com/gd/
 Source0: http://www.boutell.com/gd/http/gd-%{version}.tar.gz
 Patch0: gd-1.8.4-redhat.patch
@@ -83,6 +83,9 @@ ln -s libgd.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libgd.so.1.8
 %{_libdir}/*.a
 
 %changelog
+* Fri Jun 21 2002 Tim Powers <timp@redhat.com>
+- automated rebuild
+
 * Thu May 23 2002 Tim Powers <timp@redhat.com>
 - automated rebuild
 
