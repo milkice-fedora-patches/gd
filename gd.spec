@@ -1,7 +1,7 @@
 Summary: A graphics library for drawing image files in various formats.
 Name: gd
 Version: 1.8.4
-Release: 2
+Release: 3
 Source0: http://www.boutell.com/gd/http/gd-%{version}.tar.gz
 Patch0: gd-1.8.4-redhat.patch
 Copyright: BSD-style
@@ -50,7 +50,7 @@ If you're installing the gd graphics library, you must install gd-devel.
 %build
 make
 gcc -shared -o libgd.so.%{version} -Wl,-soname=libgd.so.%{shlibver} \
-	`ar t libgd.a` -L/usr/X11R6/lib -lfreetype -lttf -ljpeg -lpng -lz -lm
+	`ar t libgd.a` -L/usr/X11R6/lib -lfreetype -ljpeg -lpng -lz -lm
 
 %install
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -fr $RPM_BUILD_ROOT
@@ -87,6 +87,10 @@ ln -s libgd.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libgd.so.1.8
 %{_libdir}/*.a
 
 %changelog
+* Fri Jul 20 2001 Bernhard Rosenkraenzer <bero@redhat.com> 1.8.4-3
+- There's really no reason to link against both freetype 1.x and 2.x,
+  especially when gd is configured to use just freetype 2.x. ;)
+
 * Mon Jun 25 2001 Philipp Knirsch <pknirsch@redhat.de>
 - Forgot to include the freetype library in the shared library linking. Fixed.
 
