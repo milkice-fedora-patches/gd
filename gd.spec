@@ -1,7 +1,7 @@
 Summary: A graphics library for quick creation of PNG or JPEG images.
 Name: gd
 Version: 2.0.32
-Release: 2
+Release: 3
 URL: http://www.boutell.com/gd/
 Source0: http://www.boutell.com/gd/http/%{name}-%{version}.tar.gz
 License: BSD-style
@@ -64,15 +64,30 @@ rm -rf $RPM_BUILD_ROOT/%{_libdir}/libgd.la
 
 %files progs
 %defattr(-,root,root)
-%{_bindir}/*
+%{_bindir}/annotate
+%{_bindir}/bdftogd
+%{_bindir}/gd2copypal
+%{_bindir}/gd2togif
+%{_bindir}/gd2topng
+%{_bindir}/gdcmpgif
+%{_bindir}/gdparttopng
+%{_bindir}/gdtopng
+%{_bindir}/giftogd2
+%{_bindir}/pngtogd
+%{_bindir}/pngtogd2
+%{_bindir}/webpng
 
 %files devel
 %defattr(-,root,root)
+%{_bindir}/gdlib-config
 %{_includedir}/*
 %{_libdir}/*.so
 %{_libdir}/*.a
 
 %changelog
+* Thu Mar 10 2005 Than Ngo <than@redhat.com> 2.0.32-3
+- move gdlib-config in devel
+
 * Wed Mar 02 2005 Phil Knirsch <pknirsch@redhat.com> 2.0.32-2
 - bump release and rebuild with gcc 4
 
