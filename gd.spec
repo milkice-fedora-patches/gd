@@ -1,10 +1,9 @@
 Summary: A graphics library for quick creation of PNG or JPEG images.
 Name: gd
-Version: 1.8.4
-Release: 11
+Version: 2.0.15
+Release: 1
 URL: http://www.boutell.com/gd/
 Source0: http://www.boutell.com/gd/http/gd-%{version}.tar.gz
-Patch0: gd-1.8.4-redhat.patch
 License: BSD-style
 Group: System Environment/Libraries
 BuildRoot: %{_tmppath}/%{name}-root
@@ -41,24 +40,15 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 
 %prep
 %setup -q
-%patch0 -p1 -b .redhat
 
 %build
+%configure
 make
-gcc -shared -o libgd.so.%{version} -Wl,-soname=libgd.so.%{shlibver} \
-	`ar t libgd.a` -L/usr/X11R6/lib -lfreetype -ljpeg -lpng -lz -lm
 
 %install
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -fr $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT{%{_bindir},%{_includedir},%{_libdir}}
-make install \
-	INSTALL_BIN=$RPM_BUILD_ROOT%{_bindir} \
-	INSTALL_INCLUDE=$RPM_BUILD_ROOT%{_includedir} \
-	INSTALL_LIB=$RPM_BUILD_ROOT%{_libdir}
-install -m 755 libgd.so.%{version} $RPM_BUILD_ROOT%{_libdir}/
-ln -s libgd.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libgd.so
-ln -s libgd.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libgd.so.1
-ln -s libgd.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libgd.so.1.8
+%makeinstall
+rm -rf $RPM_BUILD_ROOT/%{_libdir}/libgd.la
 
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -fr $RPM_BUILD_ROOT
@@ -69,7 +59,7 @@ ln -s libgd.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libgd.so.1.8
 
 %files
 %defattr(-,root,root)
-%doc readme.txt index.html
+%doc index.html
 %{_libdir}/*.so.*
 
 %files progs
@@ -83,7 +73,16 @@ ln -s libgd.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libgd.so.1.8
 %{_libdir}/*.a
 
 %changelog
-* Wed Jan 22 2003 Tim Powers <timp@redhat.com>
+* Tue Aug 12 2003 Florian La Roche <Florian.LaRoche@redhat.de>
+- update to 2.0.15
+
+* Wed Jun 04 2003 Elliot Lee <sopwith@redhat.com>
+- rebuilt
+
+* Tue May 06 2003 Phil Knirsch <pknirsch@redhat.com> 2.0.12-1
+- Update to 2.0.12
+
+* Wed Jan 22 2003 Tim Powers <timp@redhat.com> 1.8.4-11
 - rebuilt
 
 * Wed Dec 11 2002 Tim Powers <timp@redhat.com> 1.8.4-10
