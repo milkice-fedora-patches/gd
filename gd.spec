@@ -1,27 +1,26 @@
-Summary: A graphics library for drawing .gif files.
+Summary: A graphics library for drawing image files in various formats.
 Name: gd
 Version: 1.8.3
-Release: 4
+Release: 7
 Source0: http://www.boutell.com/gd/http/gd-%{version}.tar.gz
-Patch0: gd-1.8.2-redhat.patch
+Patch0: gd-1.8.3-redhat.patch
 Copyright: BSD-style
 Group: System Environment/Libraries
 BuildRoot: %{_tmppath}/%{name}-root
 Prereq: /sbin/ldconfig
-BuildPrereq: libjpeg-devel, libpng-devel, zlib-devel
-Requires: libjpeg, libpng, zlib
+BuildPrereq: freetype-devel, libjpeg-devel, libpng-devel, zlib-devel
 %define shlibver %(echo %{version} | cut -f-2 -d.)
 
 %description
-Gd is a graphics library for drawing .gif files.  Gd allows your code to
-quickly draw images (lines, arcs, text, multiple colors, cutting and
-pasting from other images, flood fills) and write out the result as a
-.gif file. Gd is particularly useful in web applications, where .gifs
-are commonly used as inline images.  Note, however, that gd is not a
-paint program.
+Gd is a graphics library for drawing image files in various formats. Gd
+allows your code to quickly draw images (lines, arcs, text, multiple colors,
+cutting and pasting from other images, flood fills) and write out the result
+as a jpeg, png or wbmp file. Gd is particularly useful in web applications,
+where jpeg, png or wbmp files are commonly used as inline images.  Note,
+however, that gd is not a paint program.
 
-Install gd if you are developing applications which need to draw .gif
-files.  If you install gd, you'll also need to install the gd-devel
+Install gd if you are developing applications which need to draw jpeg, png
+or wbmp files. If you install gd, you'll also need to install the gd-devel
 package.
 
 %package progs
@@ -39,8 +38,8 @@ Summary: The development libraries and header files for gd.
 Group: Development/Libraries
 
 %description devel
-These are the development libraries and header files for gd, the .gif
-graphics library.
+These are the development libraries and header files for gd, the jpeg,
+png or wbmp graphics library.
 
 If you're installing the gd graphics library, you must install gd-devel.
 
@@ -62,6 +61,8 @@ make install \
 	INSTALL_LIB=$RPM_BUILD_ROOT%{_libdir}
 install -m 755 libgd.so.%{version} $RPM_BUILD_ROOT%{_libdir}/
 ln -s libgd.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libgd.so
+ln -s libgd.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libgd.so.1
+ln -s libgd.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libgd.so.1.8
 
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -fr $RPM_BUILD_ROOT
@@ -73,7 +74,7 @@ ln -s libgd.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libgd.so
 %files
 %defattr(-,root,root)
 %doc readme.txt index.html
-%{_libdir}/*.so.*.*
+%{_libdir}/*.so*
 
 %files progs
 %defattr(-,root,root)
@@ -86,6 +87,18 @@ ln -s libgd.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libgd.so
 %{_libdir}/*.a
 
 %changelog
+* Tue Dec 19 2000 Philipp Knirsch <pknirsch@redhat.de>
+- Updates the descriptions to get rid of al references to gif
+
+* Tue Dec 12 2000 Philipp Knirsch <Philipp.Knirsch@redhat.de>
+- Fixed bug #22001 where during installation the .so.1 and the so.1.8 links
+  didn't get installed and therefore updates had problems.
+
+* Wed Oct  4 2000 Nalin Dahyabhai <nalin@redhat.com>
+- define HAVE_LIBTTF to actually enable ttf support (oops, #18299)
+- remove explicit dependencies on libpng, libjpeg, et. al.
+- add BuildPrereq: freetype-devel
+
 * Wed Aug  2 2000 Matt Wilson <msw@redhat.com>
 - rebuilt against new libpng
 
