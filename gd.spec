@@ -1,9 +1,10 @@
 Summary: A graphics library for quick creation of PNG or JPEG images.
 Name: gd
 Version: 2.0.28
-Release: 1
+Release: 2
 URL: http://www.boutell.com/gd/
 Source0: http://www.boutell.com/gd/http/%{name}-%{version}.tar.gz
+Patch0: gd-2.0.28-overflow.patch
 License: BSD-style
 Group: System Environment/Libraries
 BuildRoot: %{_tmppath}/%{name}-root
@@ -40,6 +41,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 
 %prep
 %setup -q
+%patch0 -p1 -b .overflow
 
 %build
 %configure --disable-rpath
@@ -73,6 +75,9 @@ rm -rf $RPM_BUILD_ROOT/%{_libdir}/libgd.la
 %{_libdir}/*.a
 
 %changelog
+* Wed Oct 27 2004 Phil Knirsch <pknirsch@redhat.com> 2.0.28-2
+- Fixed several buffer overflows for gdMalloc() calls
+
 * Tue Jul 27 2004 Phil Knirsch <pknirsch@redhat.com> 2.0.28-1
 - Update to 2.0.28
 
