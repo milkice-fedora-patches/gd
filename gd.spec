@@ -1,10 +1,11 @@
 Summary: A graphics library for quick creation of PNG or JPEG images.
 Name: gd
 Version: 1.8.4
-Release: 4
+Release: 8
+URL: http://www.boutell.com/gd/
 Source0: http://www.boutell.com/gd/http/gd-%{version}.tar.gz
 Patch0: gd-1.8.4-redhat.patch
-Copyright: BSD-style
+License: BSD-style
 Group: System Environment/Libraries
 BuildRoot: %{_tmppath}/%{name}-root
 Prereq: /sbin/ldconfig
@@ -82,6 +83,18 @@ ln -s libgd.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libgd.so.1.8
 %{_libdir}/*.a
 
 %changelog
+* Thu May 23 2002 Tim Powers <timp@redhat.com>
+- automated rebuild
+
+* Thu Jan 24 2002 Phil Knirsch <pknirsch@redhat.com>
+- Specfile update to add URL for homepage (#54608)
+
+* Wed Jan 09 2002 Tim Powers <timp@redhat.com>
+- automated rebuild
+
+* Wed Oct 31 2001 Bernhard Rosenkraenzer <bero@redhat.com> 1.8.4-5
+- Rebuild with current libpng
+
 * Mon Aug 13 2001 Philipp Knirsch <pknirsch@redhat.de> 1.8.4-4
 - Fixed a wrong double ownership of libgd.so (#51599).
 
