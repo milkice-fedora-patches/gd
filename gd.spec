@@ -1,7 +1,7 @@
 Summary: A graphics library for quick creation of PNG or JPEG images.
 Name: gd
-Version: 2.0.15
-Release: 1
+Version: 2.0.21
+Release: 2.1
 URL: http://www.boutell.com/gd/
 Source0: http://www.boutell.com/gd/http/gd-%{version}.tar.gz
 License: BSD-style
@@ -73,6 +73,15 @@ rm -rf $RPM_BUILD_ROOT/%{_libdir}/libgd.la
 %{_libdir}/*.a
 
 %changelog
+* Tue Mar 02 2004 Elliot Lee <sopwith@redhat.com>
+- rebuilt
+
+* Fri Feb 13 2004 Elliot Lee <sopwith@redhat.com>
+- rebuilt
+
+* Mon Feb 02 2004 Phil Knirsch <pknirsch@redhat.com> 2.0.21-1
+- Updated to 2.0.21
+
 * Tue Aug 12 2003 Florian La Roche <Florian.LaRoche@redhat.de>
 - update to 2.0.15
 
