@@ -1,7 +1,7 @@
 Summary: A graphics library for quick creation of PNG or JPEG images.
 Name: gd
 Version: 2.0.21
-Release: 3
+Release: 4
 URL: http://www.boutell.com/gd/
 Source0: http://www.boutell.com/gd/http/gd-%{version}.tar.gz
 License: BSD-style
@@ -73,6 +73,9 @@ rm -rf $RPM_BUILD_ROOT/%{_libdir}/libgd.la
 %{_libdir}/*.a
 
 %changelog
+* Tue Jun 15 2004 Elliot Lee <sopwith@redhat.com>
+- rebuilt
+
 * Wed Apr 21 2004 Phil Knirsch <pknirsch@redhat.com> 2.0.21-3
 - Disable rpath usage.
 
