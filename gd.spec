@@ -1,15 +1,14 @@
-Summary: A graphics library for quick creation of PNG or JPEG images.
-Name: gd
-Version: 2.0.32
-Release: 3
-URL: http://www.boutell.com/gd/
-Source0: http://www.boutell.com/gd/http/%{name}-%{version}.tar.gz
-License: BSD-style
-Group: System Environment/Libraries
-BuildRoot: %{_tmppath}/%{name}-root
-Prereq: /sbin/ldconfig
-BuildRequires: freetype-devel, libjpeg-devel, libpng-devel, zlib-devel
-%define shlibver %(echo %{version} | cut -f-2 -d.)
+Summary:        A graphics library for quick creation of PNG or JPEG images
+Name:           gd
+Version:        2.0.33
+Release:        1
+Group:          System Environment/Libraries
+License:        BSD-style
+URL:            http://www.boutell.com/gd/
+Source0:        http://www.boutell.com/gd/http/%{name}-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires:  freetype-devel, fontconfig-devel, xorg-x11-devel
+BuildRequires:  libjpeg-devel, libpng-devel, zlib-devel
 
 %description
 The gd graphics library allows your code to quickly draw images
@@ -19,72 +18,80 @@ JPEG file. This is particularly useful in Web applications, where PNG
 and JPEG are two of the formats accepted for inline images by most
 browsers. Note that gd is not a paint program.
 
+
 %package progs
-Requires: gd = %{version}, perl
-Summary: Utility programs that use libgd.
-Group: Applications/Multimedia
+Requires:       gd = %{version}-%{release}
+Summary:        Utility programs that use libgd
+Group:          Applications/Multimedia
 
 %description progs
 The gd-progs package includes utility programs supplied with gd, a
 graphics library for creating PNG and JPEG images. If you install
 these, you must also install gd.
 
+
 %package devel
-Requires: gd = %{version}
-Summary: The development libraries and header files for gd.
-Group: Development/Libraries
+Requires:       gd = %{version}-%{release}
+Summary:        The development libraries and header files for gd
+Group:          Development/Libraries
 
 %description devel
 The gd-devel package contains the development libraries and header
 files for gd, a graphics library for creating PNG and JPEG graphics.
+
 
 %prep
 %setup -q
 
 %build
 %configure --disable-rpath
-make
+make %{?_smp_mflags}
 
 %install
-[ "$RPM_BUILD_ROOT" != "/" ] && rm -fr $RPM_BUILD_ROOT
-%makeinstall
-rm -rf $RPM_BUILD_ROOT/%{_libdir}/libgd.la
+rm -rf $RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
+rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.la
 
 %clean
-[ "$RPM_BUILD_ROOT" != "/" ] && rm -fr $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
+
 
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
 
+
 %files
-%defattr(-,root,root)
-%doc index.html
+%defattr(-,root,root,-)
+%doc COPYING README-JPEG.TXT index.html entities.html
 %{_libdir}/*.so.*
 
 %files progs
-%defattr(-,root,root)
-%{_bindir}/annotate
-%{_bindir}/bdftogd
-%{_bindir}/gd2copypal
-%{_bindir}/gd2togif
-%{_bindir}/gd2topng
-%{_bindir}/gdcmpgif
-%{_bindir}/gdparttopng
-%{_bindir}/gdtopng
-%{_bindir}/giftogd2
-%{_bindir}/pngtogd
-%{_bindir}/pngtogd2
-%{_bindir}/webpng
+%defattr(-,root,root,-)
+%{_bindir}/*
+%exclude %{_bindir}/gdlib-config
 
 %files devel
-%defattr(-,root,root)
+%defattr(-,root,root,-)
 %{_bindir}/gdlib-config
 %{_includedir}/*
 %{_libdir}/*.so
 %{_libdir}/*.a
 
+
 %changelog
+* Tue Mar 22 2005 Than Ngo <than@redhat.com> 2.0.33-1
+- 2.0.33 #150717
+- apply the patch from Jose Pedro Oliveira
+  - Added the release macro to the subpackages requirements versioning
+  - Handled the gdlib-config movement to gd-devel in a differment manner
+  - Added fontconfig-devel to the build requirements
+  - Added xorg-x11-devel to the build requirements (Xpm)
+  - Removed explicit /sbin/ldconfig requirement (gd rpm)
+  - Removed explicit perl requirement (gd-progs rpm)
+  - Added several missing documentation files (including the license file)
+  - Replaced %%makeinstall by make install DESTDIR=...
+
 * Thu Mar 10 2005 Than Ngo <than@redhat.com> 2.0.32-3
 - move gdlib-config in devel
 
@@ -103,8 +110,8 @@ rm -rf $RPM_BUILD_ROOT/%{_libdir}/libgd.la
 * Fri Jul 02 2004 Phil Knirsch <pknirsch@redhat.com> 2.0.27-1
 - Updated to 2.0.27 due to:
   o Potential memory overruns in gdImageFilledPolygon. Thanks to John Ellson.
-  o The sign of Y-axis values returned in the bounding box by gdImageStringFT was
-    incorrect. Thanks to John Ellson and Riccardo Cohen.
+  o The sign of Y-axis values returned in the bounding box by gdImageStringFT
+    was incorrect. Thanks to John Ellson and Riccardo Cohen.
 
 * Wed Jun 30 2004 Phil Knirsch <pknirsch@redhat.com> 2.0.26-1
 - Update to 2.0.26
