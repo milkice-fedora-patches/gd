@@ -1,7 +1,7 @@
-Summary: A graphics library for drawing image files in various formats.
+Summary: A graphics library for quick creation of PNG or JPEG images.
 Name: gd
 Version: 1.8.4
-Release: 3
+Release: 4
 Source0: http://www.boutell.com/gd/http/gd-%{version}.tar.gz
 Patch0: gd-1.8.4-redhat.patch
 Copyright: BSD-style
@@ -12,16 +12,12 @@ BuildPrereq: freetype-devel, libjpeg-devel, libpng-devel, zlib-devel
 %define shlibver %(echo %{version} | cut -f-2 -d.)
 
 %description
-Gd is a graphics library for drawing image files in various formats. Gd
-allows your code to quickly draw images (lines, arcs, text, multiple colors,
-cutting and pasting from other images, flood fills) and write out the result
-as a jpeg, png or wbmp file. Gd is particularly useful in web applications,
-where jpeg, png or wbmp files are commonly used as inline images.  Note,
-however, that gd is not a paint program.
-
-Install gd if you are developing applications which need to draw jpeg, png
-or wbmp files. If you install gd, you'll also need to install the gd-devel
-package.
+The gd graphics library allows your code to quickly draw images
+complete with lines, arcs, text, multiple colors, cut and paste from
+other images, and flood fills, and to write out the result as a PNG or
+JPEG file. This is particularly useful in Web applications, where PNG
+and JPEG are two of the formats accepted for inline images by most
+browsers. Note that gd is not a paint program.
 
 %package progs
 Requires: gd = %{version}, perl
@@ -29,8 +25,9 @@ Summary: Utility programs that use libgd.
 Group: Applications/Multimedia
 
 %description progs
-These are utility programs supplied with gd, the .jpeg graphics library.
-If you install these, you must install gd.
+The gd-progs package includes utility programs supplied with gd, a
+graphics library for creating PNG and JPEG images. If you install
+these, you must also install gd.
 
 %package devel
 Requires: gd = %{version}
@@ -38,10 +35,8 @@ Summary: The development libraries and header files for gd.
 Group: Development/Libraries
 
 %description devel
-These are the development libraries and header files for gd, the jpeg,
-png or wbmp graphics library.
-
-If you're installing the gd graphics library, you must install gd-devel.
+The gd-devel package contains the development libraries and header
+files for gd, a graphics library for creating PNG and JPEG graphics.
 
 %prep
 %setup -q
@@ -74,7 +69,7 @@ ln -s libgd.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libgd.so.1.8
 %files
 %defattr(-,root,root)
 %doc readme.txt index.html
-%{_libdir}/*.so*
+%{_libdir}/*.so.*
 
 %files progs
 %defattr(-,root,root)
@@ -87,6 +82,9 @@ ln -s libgd.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libgd.so.1.8
 %{_libdir}/*.a
 
 %changelog
+* Mon Aug 13 2001 Philipp Knirsch <pknirsch@redhat.de> 1.8.4-4
+- Fixed a wrong double ownership of libgd.so (#51599).
+
 * Fri Jul 20 2001 Bernhard Rosenkraenzer <bero@redhat.com> 1.8.4-3
 - There's really no reason to link against both freetype 1.x and 2.x,
   especially when gd is configured to use just freetype 2.x. ;)
