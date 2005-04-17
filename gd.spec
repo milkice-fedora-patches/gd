@@ -1,7 +1,7 @@
 Summary:        A graphics library for quick creation of PNG or JPEG images
 Name:           gd
 Version:        2.0.33
-Release:        1
+Release:        2
 Group:          System Environment/Libraries
 License:        BSD-style
 URL:            http://www.boutell.com/gd/
@@ -31,9 +31,10 @@ these, you must also install gd.
 
 
 %package devel
-Requires:       gd = %{version}-%{release}
 Summary:        The development libraries and header files for gd
 Group:          Development/Libraries
+Requires:       gd = %{version}-%{release}
+Requires:       xorg-x11-devel, libjpeg-devel, freetype-devel, libpng-devel, zlib-devel
 
 %description devel
 The gd-devel package contains the development libraries and header
@@ -80,6 +81,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Apr 17 2005 Warren Togami <wtogami@redhat.com> 2.0.33-2
+- devel reqs (#155183 thias)
+
 * Tue Mar 22 2005 Than Ngo <than@redhat.com> 2.0.33-1
 - 2.0.33 #150717
 - apply the patch from Jose Pedro Oliveira
