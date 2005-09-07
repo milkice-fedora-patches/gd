@@ -44,7 +44,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 
 %prep
 %setup -q
-%patch0 -p1 -n .freetype
+%patch0 -p1 -b .freetype
 
 %build
 %configure --disable-rpath
