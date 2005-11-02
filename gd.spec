@@ -1,16 +1,16 @@
-Summary:        A graphics library for quick creation of PNG or JPEG images
-Name:           gd
-Version:        2.0.33
-Release:        4
-Group:          System Environment/Libraries
-License:        BSD-style
-URL:            http://www.boutell.com/gd/
-Source0:        http://www.boutell.com/gd/http/%{name}-%{version}.tar.gz
-Patch0:         gd-2.0.33-freetype.patch
-Patch1:         gd-2.0.33-SetAAPixel.patch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires:  freetype-devel, fontconfig-devel, xorg-x11-devel
-BuildRequires:  libjpeg-devel, libpng-devel, zlib-devel
+Summary:       A graphics library for quick creation of PNG or JPEG images
+Name:          gd
+Version:       2.0.33
+Release:       5
+Group:         System Environment/Libraries
+License:       BSD-style
+URL:           http://www.boutell.com/gd/
+Source0:       http://www.boutell.com/gd/http/%{name}-%{version}.tar.gz
+Patch0:        gd-2.0.33-freetype.patch
+Patch1:        gd-2.0.33-SetAAPixel.patch
+BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires: freetype-devel, fontconfig-devel, libX11-devel, libXpm-devel
+BuildRequires: libjpeg-devel, libpng-devel, zlib-devel
 
 %description
 The gd graphics library allows your code to quickly draw images
@@ -33,10 +33,11 @@ these, you must also install gd.
 
 
 %package devel
-Summary:        The development libraries and header files for gd
-Group:          Development/Libraries
-Requires:       gd = %{version}-%{release}
-Requires:       xorg-x11-devel, libjpeg-devel, freetype-devel, libpng-devel, zlib-devel
+Summary:  The development libraries and header files for gd
+Group:    Development/Libraries
+Requires: gd = %{version}-%{release}
+Requires: libX11-devel, libXpm-devel, libjpeg-devel, freetype-devel
+Requires: libpng-devel, zlib-devel
 
 %description devel
 The gd-devel package contains the development libraries and header
@@ -85,6 +86,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Nov 02 2005 Phil Knirsch <pknirsch@redhat.com> 2.0.33-5
+- Switched BuildPreReqs and Requires to modular xorg-x11 style
+
 * Mon Oct 10 2005 Phil Knirsch <pknirsch@redhat.com> 2.0.33-4
 - Fixed possible gd crash when drawing AA line near image borders (#167843)
 
