@@ -89,7 +89,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Fri Jan 20 2006 Phil Knirsch <pknirsch@redhat.com> 2.0.33-6
-- Included a few more overflow checks.
+- Included a few more overflow checks (#177907)
 
 * Fri Dec 09 2005 Jesse Keating <jkeating@redhat.com>
 - rebuilt
