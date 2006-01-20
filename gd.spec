@@ -1,13 +1,14 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.33
-Release: 5.1
+Release:       6
 Group:         System Environment/Libraries
 License:       BSD-style
 URL:           http://www.boutell.com/gd/
 Source0:       http://www.boutell.com/gd/http/%{name}-%{version}.tar.gz
 Patch0:        gd-2.0.33-freetype.patch
 Patch1:        gd-2.0.33-SetAAPixel.patch
+Patch2:        gd-2.0.33-security.patch
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: freetype-devel, fontconfig-devel, libX11-devel, libXpm-devel
 BuildRequires: libjpeg-devel, libpng-devel, zlib-devel
@@ -48,6 +49,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %setup -q
 %patch0 -p1 -b .freetype
 %patch1 -p1 -b .SetAAPixel
+%patch2 -p1 -b .security
 
 %build
 %configure --disable-rpath
@@ -86,6 +88,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jan 20 2006 Phil Knirsch <pknirsch@redhat.com> 2.0.33-6
+- Included a few more overflow checks.
+
 * Fri Dec 09 2005 Jesse Keating <jkeating@redhat.com>
 - rebuilt
 
