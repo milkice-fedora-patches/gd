@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.33
-Release:       6.1
+Release:       6.2
 Group:         System Environment/Libraries
 License:       BSD-style
 URL:           http://www.boutell.com/gd/
@@ -88,6 +88,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Feb 10 2006 Jesse Keating <jkeating@redhat.com> - 2.0.33-6.2
+- bump again for double-long bug on ppc(64)
+
 * Tue Feb 07 2006 Jesse Keating <jkeating@redhat.com> - 2.0.33-6.1
 - rebuilt for new gcc4.1 snapshot and glibc changes
 
