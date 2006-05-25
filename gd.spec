@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.33
-Release:       6.2
+Release:       7
 Group:         System Environment/Libraries
 License:       BSD-style
 URL:           http://www.boutell.com/gd/
@@ -9,9 +9,11 @@ Source0:       http://www.boutell.com/gd/http/%{name}-%{version}.tar.gz
 Patch0:        gd-2.0.33-freetype.patch
 Patch1:        gd-2.0.33-SetAAPixel.patch
 Patch2:        gd-2.0.33-security.patch
+Patch3:	       gd-2.0.33-multilib.patch
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: freetype-devel, fontconfig-devel, libX11-devel, libXpm-devel
 BuildRequires: libjpeg-devel, libpng-devel, zlib-devel
+Requires:      pkgconfig
 
 %description
 The gd graphics library allows your code to quickly draw images
@@ -50,6 +52,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch0 -p1 -b .freetype
 %patch1 -p1 -b .SetAAPixel
 %patch2 -p1 -b .security
+%patch3 -p1 -b .mlib
 
 %build
 %configure --disable-rpath
@@ -85,9 +88,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 %{_libdir}/*.so
 %{_libdir}/*.a
+%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Thu May 25 2006 Ivana Varekova <varekova@redhat.com> - 2.0.33-7
+- fix multilib problem (add pkgconfig)
+
 * Fri Feb 10 2006 Jesse Keating <jkeating@redhat.com> - 2.0.33-6.2
 - bump again for double-long bug on ppc(64)
 
