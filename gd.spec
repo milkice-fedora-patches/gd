@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.33
-Release:       7
+Release:       8
 Group:         System Environment/Libraries
 License:       BSD-style
 URL:           http://www.boutell.com/gd/
@@ -12,7 +12,7 @@ Patch2:        gd-2.0.33-security.patch
 Patch3:	       gd-2.0.33-multilib.patch
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: freetype-devel, fontconfig-devel, libX11-devel, libXpm-devel
-BuildRequires: libjpeg-devel, libpng-devel, zlib-devel
+BuildRequires: libjpeg-devel, libpng-devel, zlib-devel, pkgconfig
 Requires:      pkgconfig
 
 %description
@@ -92,6 +92,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Jun 06 2006 Karsten Hopp <karsten@redhat.de> 2.0.33-8
+- buildrequire pkgconfig
+
 * Thu May 25 2006 Ivana Varekova <varekova@redhat.com> - 2.0.33-7
 - fix multilib problem (add pkgconfig)
 
