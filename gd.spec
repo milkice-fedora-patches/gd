@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.33
-Release:       9.1
+Release:       9.2
 Group:         System Environment/Libraries
 License:       BSD-style
 URL:           http://www.boutell.com/gd/
@@ -11,6 +11,7 @@ Patch1:        gd-2.0.33-SetAAPixel.patch
 Patch2:        gd-2.0.33-security.patch
 Patch3:	       gd-2.0.33-multilib.patch
 Patch4:        gd-loop.patch
+Patch5:	       gd-sparc64.patch
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: freetype-devel, fontconfig-devel, libX11-devel, libXpm-devel
 BuildRequires: libjpeg-devel, libpng-devel, zlib-devel, pkgconfig
@@ -55,6 +56,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch2 -p1 -b .security
 %patch3 -p1 -b .mlib
 %patch4 -p1 -b .loop
+%patch5 -p1 -b .sparc64
 
 %build
 %configure --disable-rpath
@@ -94,7 +96,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Wed Jul 12 2006 Jesse Keating <jkeating@redhat.com> - sh: line 0: fg: no job control
+* Wed Jul 19 2006 Jitka Kudrnacova <jkudrnac@redhat.com> - 2.0.33 - 9.2
+- use CFLAGS on sparc64 (#199363)
+
+* Wed Jul 12 2006 Jesse Keating <jkeating@redhat.com> - 2.0.33 - 9.1
 - rebuild
 
 * Mon Jul 10 2006 Jitka Kudrnacova <jkudrnac@redhat.com> 2.0.33-9
