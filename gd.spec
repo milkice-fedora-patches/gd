@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.33
-Release:       9.2
+Release:       9.3%{?dist}
 Group:         System Environment/Libraries
 License:       BSD-style
 URL:           http://www.boutell.com/gd/
@@ -42,7 +42,7 @@ Summary:  The development libraries and header files for gd
 Group:    Development/Libraries
 Requires: gd = %{version}-%{release}
 Requires: libX11-devel, libXpm-devel, libjpeg-devel, freetype-devel
-Requires: libpng-devel, zlib-devel
+Requires: libpng-devel, zlib-devel, fontconfig-devel
 
 %description devel
 The gd-devel package contains the development libraries and header
@@ -96,6 +96,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Sep 13 2006 Jitka Kudrnacova <jkudrnac@redhat.com> - 2.0.33 - 9.3
+- gd-devel now requires fontconfig-devel (#205834)
+
 * Wed Jul 19 2006 Jitka Kudrnacova <jkudrnac@redhat.com> - 2.0.33 - 9.2
 - use CFLAGS on sparc64 (#199363)
 
