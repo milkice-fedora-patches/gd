@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.33
-Release:       9.3%{?dist}
+Release:       9.4%{?dist}
 Group:         System Environment/Libraries
 License:       BSD-style
 URL:           http://www.boutell.com/gd/
@@ -12,10 +12,10 @@ Patch2:        gd-2.0.33-security.patch
 Patch3:	       gd-2.0.33-multilib.patch
 Patch4:        gd-loop.patch
 Patch5:	       gd-sparc64.patch
+Patch6:        gd-2.0.33-overflow.patch
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: freetype-devel, fontconfig-devel, libX11-devel, libXpm-devel
 BuildRequires: libjpeg-devel, libpng-devel, zlib-devel, pkgconfig
-Requires:      pkgconfig
 
 %description
 The gd graphics library allows your code to quickly draw images
@@ -43,6 +43,7 @@ Group:    Development/Libraries
 Requires: gd = %{version}-%{release}
 Requires: libX11-devel, libXpm-devel, libjpeg-devel, freetype-devel
 Requires: libpng-devel, zlib-devel, fontconfig-devel
+Requires: pkgconfig
 
 %description devel
 The gd-devel package contains the development libraries and header
@@ -57,6 +58,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch3 -p1 -b .mlib
 %patch4 -p1 -b .loop
 %patch5 -p1 -b .sparc64
+%patch6 -p1 -b .overflow
 
 %build
 %configure --disable-rpath
@@ -96,6 +98,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Oct 31 2006 Adam Tkac <atkac@redhat.com> 2.0.33-9.4
+- patched some additionals overflows in gd (#175414)
+
 * Wed Sep 13 2006 Jitka Kudrnacova <jkudrnac@redhat.com> - 2.0.33 - 9.3
 - gd-devel now requires fontconfig-devel (#205834)
 
