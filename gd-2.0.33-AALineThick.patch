@@ -1,0 +1,71 @@
+--- gd-2.0.33/gd.c.pom	2006-11-16 14:29:57.000000000 +0100
++++ gd-2.0.33/gd.c	2006-11-16 14:30:44.000000000 +0100
+@@ -3075,6 +3075,8 @@
+ 	/* keep them as 32bits */
+ 	long x, y, inc;
+ 	long dx, dy,tmp;
++	int w, wid, wstart;
++	int thick = im->thick;
+ 	if (!im->trueColor) {
+ 		/* TBB: don't crash when the image is of the wrong type */
+ 		gdImageLine(im, x1, y1, x2, y2, col);
+@@ -3087,12 +3089,30 @@
+           return;
+ 	dx = x2 - x1;
+ 	dy = y2 - y1;
+-
+ 	if (dx == 0 && dy == 0) {
+ 		/* TBB: allow setting points */
+ 		gdImageSetAAPixelColor(im, x1, y1, col, 0xFF);
+ 		return;
+ 	}
++	else {
++	    double ag;
++	    if (dy < dx) 
++		ag  = cos (atan2 (dy, dx));
++	    else 
++		ag = sin (atan2 (dy, dx));
++            if (ag != 0)                                                                                                                         
++	    {                                                                                                                                  
++        	wid = thick / ag;
++	    }                                                                                                                                  
++	    else                                                                                                                                 
++	    {                                                                                                                                  
++    		wid = 1;                                                                                                                         
++	    }
++	    if (wid == 0)                                                                                                                        
++	    {                                                                                                                                  
++	          wid = 1;                                                                                                                         
++	    }
++	}
+ 	if (abs(dx) > abs(dy)) {
+ 		if (dx < 0) {
+ 			tmp = x1;
+@@ -3109,8 +3129,11 @@
+ 		inc = (dy * 65536) / dx;
+ 		/* TBB: set the last pixel for consistency (<=) */
+ 		while ((x >> 16) <= x2) {
+-			gdImageSetAAPixelColor(im, x >> 16, y >> 16, col, (y >> 8) & 0xFF);
+-			gdImageSetAAPixelColor(im, x >> 16, (y >> 16) + 1,col, (~y >> 8) & 0xFF);
++			wstart = (y >> 16) - wid / 2;                                                                                                                 
++			for (w = wstart; w < wstart + wid; w++) {   
++			    gdImageSetAAPixelColor(im, (x >> 16) , w , col , (y >> 8) & 0xFF);
++    			    gdImageSetAAPixelColor(im, (x >> 16) , w + 1 , col, (~y >> 8) & 0xFF);
++    			}
+ 			x += (1 << 16);
+ 			y += inc;
+ 		}
+@@ -3130,8 +3153,11 @@
+ 		inc = (dx * 65536) / dy;
+ 		/* TBB: set the last pixel for consistency (<=) */
+ 		while ((y>>16) <= y2) {
+-			gdImageSetAAPixelColor(im, x >> 16, y >> 16, col, (x >> 8) & 0xFF);
+-			gdImageSetAAPixelColor(im, (x >> 16) + 1, (y >> 16),col, (~x >> 8) & 0xFF);
++			wstart = (x >> 16) - wid / 2;                                                                                                                 
++			for (w = wstart; w < wstart + wid; w++) {
++                    	    gdImageSetAAPixelColor(im, w , y >> 16  , col, (x >> 8) & 0xFF);                   
++                    	    gdImageSetAAPixelColor(im, w + 1, y >> 16, col, (~x >> 8) & 0xFF);  
++                    	}
+ 			x += inc;
+ 			y += (1<<16);
+ 		}

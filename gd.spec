@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.33
-Release:       9.4%{?dist}
+Release:       10%{?dist}
 Group:         System Environment/Libraries
 License:       BSD-style
 URL:           http://www.boutell.com/gd/
@@ -13,6 +13,7 @@ Patch3:	       gd-2.0.33-multilib.patch
 Patch4:        gd-loop.patch
 Patch5:	       gd-sparc64.patch
 Patch6:        gd-2.0.33-overflow.patch
+Patch7:	       gd-2.0.33-AALineThick.patch
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: freetype-devel, fontconfig-devel, libX11-devel, libXpm-devel
 BuildRequires: libjpeg-devel, libpng-devel, zlib-devel, pkgconfig
@@ -59,6 +60,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch4 -p1 -b .loop
 %patch5 -p1 -b .sparc64
 %patch6 -p1 -b .overflow
+%patch7 -p1 -b .AALineThick
 
 %build
 %configure --disable-rpath
@@ -98,6 +100,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Nov 16 2006 Ivana Varekova <varekova@redhat.com> 2.0.33-10
+- added 'thick' - variable support for AA line (#198042)
+
 * Tue Oct 31 2006 Adam Tkac <atkac@redhat.com> 2.0.33-9.4
 - patched some additionals overflows in gd (#175414)
 
