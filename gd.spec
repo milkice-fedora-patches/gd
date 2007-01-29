@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.33
-Release:       11%{?dist}
+Release:       12%{?dist}
 Group:         System Environment/Libraries
 License:       BSD-style
 URL:           http://www.boutell.com/gd/
@@ -15,6 +15,7 @@ Patch5:	       gd-sparc64.patch
 Patch6:        gd-2.0.33-overflow.patch
 Patch7:	       gd-2.0.33-AALineThick.patch
 Patch8:	       gd-2.0.33-BoxBound.patch
+Patch9:	       gd-2.0.33-cve-07-0455.patch
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: freetype-devel, fontconfig-devel, libX11-devel, libXpm-devel
 BuildRequires: libjpeg-devel, libpng-devel, zlib-devel, pkgconfig
@@ -63,6 +64,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch6 -p1 -b .overflow
 %patch7 -p1 -b .AALineThick
 %patch8 -p1 -b .bb
+%patch9 -p1 -b .cve-07-0455
 
 %build
 %configure --disable-rpath
@@ -102,6 +104,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jan 29 2007 Ivana Varekova <varekova@redhat.com> 2.0.33-12
+- Resolves: #224610
+  CVE-2007-0455 gd buffer overrun
+
 * Tue Nov 21 2006 Ivana Varekova <varekova@redhat.com> 2.0.33-11
 - Fix problem with to large box boundaries
   Resolves: #197747
