@@ -1,21 +1,18 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
-Version:       2.0.33
-Release:       12%{?dist}
+Version:       2.0.34
+Release:       1%{?dist}
 Group:         System Environment/Libraries
 License:       BSD-style
-URL:           http://www.boutell.com/gd/
-Source0:       http://www.boutell.com/gd/http/%{name}-%{version}.tar.gz
+URL:           http://www.libgd.org/Main_Page
+Source0:       http://www.libgd.org/Releases/%{name}-%{version}.tar.bz2
 Patch0:        gd-2.0.33-freetype.patch
-Patch1:        gd-2.0.33-SetAAPixel.patch
-Patch2:        gd-2.0.33-security.patch
-Patch3:	       gd-2.0.33-multilib.patch
+Patch3:        gd-2.0.34-multilib.patch
 Patch4:        gd-loop.patch
-Patch5:	       gd-sparc64.patch
+Patch5:	       gd-2.0.34-sparc64.patch
 Patch6:        gd-2.0.33-overflow.patch
 Patch7:	       gd-2.0.33-AALineThick.patch
 Patch8:	       gd-2.0.33-BoxBound.patch
-Patch9:	       gd-2.0.33-cve-07-0455.patch
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: freetype-devel, fontconfig-devel, libX11-devel, libXpm-devel
 BuildRequires: libjpeg-devel, libpng-devel, zlib-devel, pkgconfig
@@ -56,15 +53,12 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %prep
 %setup -q
 %patch0 -p1 -b .freetype
-%patch1 -p1 -b .SetAAPixel
-%patch2 -p1 -b .security
 %patch3 -p1 -b .mlib
 %patch4 -p1 -b .loop
-%patch5 -p1 -b .sparc64
 %patch6 -p1 -b .overflow
+%patch5 -p1 -b .sparc64 
 %patch7 -p1 -b .AALineThick
 %patch8 -p1 -b .bb
-%patch9 -p1 -b .cve-07-0455
 
 %build
 %configure --disable-rpath
@@ -82,7 +76,6 @@ rm -rf $RPM_BUILD_ROOT
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
-
 
 %files
 %defattr(-,root,root,-)
@@ -104,6 +97,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Feb  8 2007 Ivana Varekova <varekova@redhat.com> 2.0.34-1
+- update to 2.0.34
+
 * Mon Jan 29 2007 Ivana Varekova <varekova@redhat.com> 2.0.33-12
 - Resolves: #224610
   CVE-2007-0455 gd buffer overrun
