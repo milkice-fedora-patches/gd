@@ -3,7 +3,7 @@ Name:          gd
 Version:       2.0.34
 Release:       2%{?dist}
 Group:         System Environment/Libraries
-License:       BSD-style
+License:       MIT and GPL
 URL:           http://www.libgd.org/Main_Page
 Source0:       http://www.libgd.org/releases/%{name}-%{version}.tar.bz2
 Patch0:        gd-2.0.33-freetype.patch
