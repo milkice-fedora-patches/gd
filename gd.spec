@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
-Version:       2.0.34
-Release:       2%{?dist}
+Version:       2.0.35
+Release:       1%{?dist}
 Group:         System Environment/Libraries
 License:       BSD-style
 URL:           http://www.libgd.org/Main_Page
@@ -10,8 +10,8 @@ Patch0:        gd-2.0.33-freetype.patch
 Patch3:        gd-2.0.34-multilib.patch
 Patch4:        gd-loop.patch
 Patch5:        gd-2.0.34-sparc64.patch
-Patch6:        gd-2.0.33-overflow.patch
-Patch7:        gd-2.0.33-AALineThick.patch
+Patch6:        gd-2.0.35-overflow.patch
+Patch7:        gd-2.0.35-AALineThick.patch
 Patch8:        gd-2.0.33-BoxBound.patch
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: freetype-devel, fontconfig-devel, libX11-devel, libXpm-devel
@@ -98,6 +98,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Sep  5 2007 Ivana varekova <varekova@redhat.com> 2.0.35-1
+- update to 2.0.35
+- fix several vulnerabilities #277421
+
 * Thu Feb 22 2007 Ivana Varekova <varekova@redhat.com> 2.0.34-2
 - incorporate package review feedback
 
