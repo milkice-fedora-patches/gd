@@ -13,7 +13,7 @@
 +Description: A graphics library for quick creation of PNG or JPEG images 
 +Version: @VERSION@ 
 +Requires: 
-+Libs: -ldg 
++Libs: -L${libdir} -lgd 
 +Libs.private: @LIBS@ 
 +Cflags: -I@includedir@ 
 --- gd-2.0.34/Makefile.in.pom	2007-02-03 02:41:46.000000000 +0100

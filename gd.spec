@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.35
-Release:       1%{?dist}
+Release:       2%{?dist}
 Group:         System Environment/Libraries
 License:       MIT and GPL
 URL:           http://www.libgd.org/Main_Page
@@ -100,6 +100,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Nov 19 2007 Ivana Varekova <varekova@redhat.com> 2.0.35-2
+- fix gdlib.pc file
+
 * Tue Sep 18 2007 Ivana Varekova <varekova@redhat.com> 2.0.35-1
 - update to 2.0.35
 
