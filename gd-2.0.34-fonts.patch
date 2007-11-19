@@ -5,7 +5,7 @@
  CC = @CC@
  CCDEPMODE = @CCDEPMODE@
 -CFLAGS = @CFLAGS@
-+CFLAGS = @CFLAGS@ -D_DEFAULT_FONTPATH="/usr/share/X11/fonts/TTF/:/usr/share/fonts/bitstream-vera/:/usr/share/fonts/dejavu-lgc/:/usr/share/fonts/default/Type1/:/usr/share/X11/fonts/Type1"
++CFLAGS = @CFLAGS@ -D_DEFAULT_FONTPATH="/usr/share/X11/fonts/TTF/:/usr/share/fonts/bitstream-vera/:/usr/share/fonts/dejavu-lgc/:/usr/share/fonts/default/Type1/:/usr/share/X11/fonts/Type1:/usr/share/fonts/liberation/"
  CPP = @CPP@
  CPPFLAGS = @CPPFLAGS@
  CXX = @CXX@

@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.35
-Release:       2%{?dist}
+Release:       3%{?dist}
 Group:         System Environment/Libraries
 License:       MIT and GPL
 URL:           http://www.libgd.org/Main_Page
@@ -34,8 +34,7 @@ Group:          Applications/Multimedia
 
 %description progs
 The gd-progs package includes utility programs supplied with gd, a
-graphics library for creating PNG and JPEG images. If you install
-these, you must also install gd.
+graphics library for creating PNG and JPEG images. 
 
 
 %package devel
@@ -49,7 +48,6 @@ Requires: pkgconfig
 %description devel
 The gd-devel package contains the development libraries and header
 files for gd, a graphics library for creating PNG and JPEG graphics.
-
 
 %prep
 %setup -q
@@ -81,7 +79,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%doc COPYING README-JPEG.TXT index.html entities.html
+%doc COPYING README-JPEG.TXT index.html 
 %{_libdir}/*.so.*
 
 %files progs
@@ -98,8 +96,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*.a
 %{_libdir}/pkgconfig/gdlib.pc
 
-
 %changelog
+* Mon Nov 19 2007 Ivana Varekova <varekova@redhat.com> 2.0.35-3
+- spec file cleanup
+
 * Mon Nov 19 2007 Ivana Varekova <varekova@redhat.com> 2.0.35-2
 - fix gdlib.pc file
 
