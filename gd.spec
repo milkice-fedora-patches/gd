@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.35
-Release:       3%{?dist}
+Release:       4%{?dist}
 Group:         System Environment/Libraries
 License:       MIT and GPL
 URL:           http://www.libgd.org/Main_Page
@@ -68,6 +68,7 @@ make %{?_smp_mflags}
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.la
+rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -93,10 +94,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/gdlib-config
 %{_includedir}/*
 %{_libdir}/*.so
-%{_libdir}/*.a
 %{_libdir}/pkgconfig/gdlib.pc
 
 %changelog
+* Tue Nov 20 2007 Ivana Varekova <varekova@redhat.com> 2.0.35-4
+- remove static library
+
 * Mon Nov 19 2007 Ivana Varekova <varekova@redhat.com> 2.0.35-3
 - spec file cleanup
 
