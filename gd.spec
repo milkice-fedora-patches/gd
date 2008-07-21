@@ -1,9 +1,9 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.35
-Release:       5%{?dist}
+Release:       6%{?dist}
 Group:         System Environment/Libraries
-License:       MIT and GPL
+License:       MIT
 URL:           http://www.libgd.org/Main_Page
 Source0:       http://www.libgd.org/releases/%{name}-%{version}.tar.bz2
 Patch0:        gd-2.0.33-freetype.patch
@@ -97,6 +97,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/gdlib.pc
 
 %changelog
+* Mon Jul 21 2008 Tom "spot" Callaway <tcallawa@redhat.com> - 2.0.35-6
+- fix license tag (nothing in this is GPL)
+
 * Tue Feb 19 2008 Fedora Release Engineering <rel-eng@fedoraproject.org> - 2.0.35-5
 - Autorebuild for GCC 4.3
 
