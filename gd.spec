@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.35
-Release:       10%{?dist}
+Release:       11%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://www.libgd.org/Main_Page
@@ -15,7 +15,6 @@ Patch7:        gd-2.0.35-AALineThick.patch
 Patch8:        gd-2.0.33-BoxBound.patch
 Patch9:        gd-2.0.34-fonts.patch
 Patch10:       gd-2.0.35-time.patch
-Patch11:       exit.patch
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: freetype-devel, fontconfig-devel, libX11-devel, libXpm-devel
 BuildRequires: libjpeg-devel, libpng-devel, zlib-devel, pkgconfig
@@ -62,7 +61,6 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch8 -p1 -b .bb
 %patch9 -p1 -b .fonts
 %patch10 -p1 -b .time
-%patch11 -p1 -b .exit
 
 %build
 %configure --disable-rpath
@@ -101,6 +99,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/gdlib.pc
 
 %changelog
+* Wed Jan  6 2010 Jiri Moskovcak <jmoskovc@redhat.com> - 2.0.35-11
+- more spec file fixes
+
 * Wed Jan  6 2010 Jiri Moskovcak <jmoskovc@redhat.com> - 2.0.35-10
 - spec file fixes based on merge review
 
