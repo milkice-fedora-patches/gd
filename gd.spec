@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.35
-Release:       14%{?dist}
+Release:       16%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://www.libgd.org/Main_Page
@@ -99,9 +99,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/gdlib.pc
 
 %changelog
-* Tue Feb 28 2012 Honza Horak <hhorak@redhat.com> - 2.0.35-14
+* Tue Feb 28 2012 Honza Horak <hhorak@redhat.com> - 2.0.35-16
 - Fixed AALineThick.patch to display vertical lines correctly
   Resolves: #798255
+
+* Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.35-15
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+
+* Tue Nov 08 2011 Adam Jackson <ajax@redhat.com> 2.0.35-14
+- Rebuild for libpng 1.5
 
 * Wed Oct 26 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.35-13
 - Rebuilt for glibc bug#747377
