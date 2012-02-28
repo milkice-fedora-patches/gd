@@ -1,5 +1,6 @@
---- gd-2.0.35/gd.c.pom	2007-06-19 22:25:51.000000000 +0200
-+++ gd-2.0.35/gd.c	2007-09-05 11:25:16.000000000 +0200
+diff -up gd-2.0.35/gd.c.AALineThick gd-2.0.35/gd.c
+--- gd-2.0.35/gd.c.AALineThick	2007-06-19 22:25:51.000000000 +0200
++++ gd-2.0.35/gd.c	2012-02-28 11:02:09.708015922 +0100
 @@ -3474,6 +3474,8 @@ static void gdImageAALine (gdImagePtr im
  	/* keep them as 32bits */
  	long x, y, inc;
@@ -15,13 +16,13 @@
  	}
 +	else { 
 +	    double ag; 
-+	    if (dy < dx)  
++	    if (abs(dy) < abs(dx))  
 +		ag  = cos (atan2 (dy, dx)); 
 +	    else  
 +		ag = sin (atan2 (dy, dx)); 
 +	    if (ag != 0)
 +	    {
-+		wid = thick / ag; 
++		wid = abs(thick / ag); 
 +	    }
 +	    else
 +	    {
