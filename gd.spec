@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.35
-Release:       16%{?dist}
+Release:       17%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://www.libgd.org/Main_Page
@@ -15,6 +15,7 @@ Patch7:        gd-2.0.35-AALineThick.patch
 Patch8:        gd-2.0.33-BoxBound.patch
 Patch9:        gd-2.0.34-fonts.patch
 Patch10:       gd-2.0.35-time.patch
+Patch11:       gd-2.0.35-security3.patch
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: freetype-devel, fontconfig-devel, libX11-devel, libXpm-devel
 BuildRequires: libjpeg-devel, libpng-devel, zlib-devel, pkgconfig
@@ -61,6 +62,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch8 -p1 -b .bb
 %patch9 -p1 -b .fonts
 %patch10 -p1 -b .time
+%patch11 -p1 -b .sec3
 
 %build
 %configure --disable-rpath
@@ -99,6 +101,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/gdlib.pc
 
 %changelog
+* Mon Jun 11 2012 Honza Horak <hhorak@redhat.com> - 2.0.35-17
+- fixed CVE-2009-3546 gd: insufficient input validation in _gdGetColors()
+  Resolves: #830745
+
 * Tue Feb 28 2012 Honza Horak <hhorak@redhat.com> - 2.0.35-16
 - Fixed AALineThick.patch to display vertical lines correctly
   Resolves: #798255
