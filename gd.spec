@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.35
-Release:       17%{?dist}
+Release:       18%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://www.libgd.org/Main_Page
@@ -101,6 +101,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/gdlib.pc
 
 %changelog
+* Fri Jul 27 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.35-18
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
+
 * Mon Jun 11 2012 Honza Horak <hhorak@redhat.com> - 2.0.35-17
 - fixed CVE-2009-3546 gd: insufficient input validation in _gdGetColors()
   Resolves: #830745
