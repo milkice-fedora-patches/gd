@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.35
-Release:       18%{?dist}
+Release:       19%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://www.libgd.org/Main_Page
@@ -16,7 +16,6 @@ Patch8:        gd-2.0.33-BoxBound.patch
 Patch9:        gd-2.0.34-fonts.patch
 Patch10:       gd-2.0.35-time.patch
 Patch11:       gd-2.0.35-security3.patch
-BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: freetype-devel, fontconfig-devel, libX11-devel, libXpm-devel
 BuildRequires: libjpeg-devel, libpng-devel, zlib-devel, pkgconfig
 
@@ -69,31 +68,23 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 make %{?_smp_mflags}
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make install INSTALL='install -p' DESTDIR=$RPM_BUILD_ROOT 
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.la
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
 
 %files
-%defattr(-,root,root,-)
 %doc COPYING README-JPEG.TXT index.html NEWS
 %{_libdir}/*.so.*
 
 %files progs
-%defattr(-,root,root,-)
 %{_bindir}/*
 %exclude %{_bindir}/gdlib-config
 
 %files devel
-%defattr(-,root,root,-)
 %doc index.html
 %{_bindir}/gdlib-config
 %{_includedir}/*
@@ -101,6 +92,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/gdlib.pc
 
 %changelog
+* Tue Aug 28 2012 Honza Horak <hhorak@redhat.com> - 2.0.35-19
+- Spec file cleanup
+
 * Fri Jul 27 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.35-18
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
