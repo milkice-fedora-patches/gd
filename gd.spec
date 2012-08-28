@@ -67,6 +67,9 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch11 -p1 -b .sec3
 %patch12 -p1 -b .runtests
 
+libtoolize --copy --force
+aclocal
+
 %build
 %configure --disable-rpath
 make %{?_smp_mflags}
@@ -109,6 +112,7 @@ popd
 * Tue Aug 28 2012 Honza Horak <hhorak@redhat.com> - 2.0.35-19
 - Spec file cleanup
 - Compile and run test suite during build
+- Re-generate ltmain.sh to get rid of --rpath in gd-progs
 
 * Fri Jul 27 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.35-18
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
