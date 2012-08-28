@@ -16,8 +16,11 @@ Patch8:        gd-2.0.33-BoxBound.patch
 Patch9:        gd-2.0.34-fonts.patch
 Patch10:       gd-2.0.35-time.patch
 Patch11:       gd-2.0.35-security3.patch
+Patch12:       gd-2.0.35-runtests.patch
 BuildRequires: freetype-devel, fontconfig-devel, libX11-devel, libXpm-devel
 BuildRequires: libjpeg-devel, libpng-devel, zlib-devel, pkgconfig
+# we need cmake for building test suite
+BuildRequires: cmake
 
 %description
 The gd graphics library allows your code to quickly draw images
@@ -62,6 +65,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch9 -p1 -b .fonts
 %patch10 -p1 -b .time
 %patch11 -p1 -b .sec3
+%patch12 -p1 -b .runtests
 
 %build
 %configure --disable-rpath
@@ -71,6 +75,16 @@ make %{?_smp_mflags}
 make install INSTALL='install -p' DESTDIR=$RPM_BUILD_ROOT 
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.la
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
+
+%check
+pushd tests
+cmake -DBUILD_TEST=1 \
+      -DGD_INCLUDE_DIR="`pwd`/.." \
+      -DGD_LIBS_DIR="`pwd`/../.libs" \
+      -DGD_SOURCE_DIR="`pwd`/.." .
+CPATH="`pwd`/gdtest" make
+make test
+popd
 
 %post -p /sbin/ldconfig
 
@@ -94,6 +108,7 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
 %changelog
 * Tue Aug 28 2012 Honza Horak <hhorak@redhat.com> - 2.0.35-19
 - Spec file cleanup
+- Compile and run test suite during build
 
 * Fri Jul 27 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.35-18
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
