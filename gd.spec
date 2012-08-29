@@ -20,7 +20,7 @@ Patch12:       gd-2.0.35-runtests.patch
 BuildRequires: freetype-devel, fontconfig-devel, libX11-devel, libXpm-devel
 BuildRequires: libjpeg-devel, libpng-devel, zlib-devel, pkgconfig
 # we need cmake for building test suite
-BuildRequires: cmake
+BuildRequires: cmake, chrpath
 
 %description
 The gd graphics library allows your code to quickly draw images
@@ -67,9 +67,6 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch11 -p1 -b .sec3
 %patch12 -p1 -b .runtests
 
-libtoolize --copy --force
-aclocal
-
 %build
 %configure --disable-rpath
 make %{?_smp_mflags}
@@ -78,6 +75,9 @@ make %{?_smp_mflags}
 make install INSTALL='install -p' DESTDIR=$RPM_BUILD_ROOT 
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.la
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
+
+# Using the last resort to remove rpath, another tricks didn't help
+chrpath --delete $RPM_BUILD_ROOT%{_bindir}/{pngtogd,gdparttopng,annotate,gdcmpgif,gdtopng,webpng,pngtogd2,gd2togif,gd2copypal,giftogd2,gd2topng}
 
 %check
 pushd tests
@@ -112,7 +112,7 @@ popd
 * Tue Aug 28 2012 Honza Horak <hhorak@redhat.com> - 2.0.35-19
 - Spec file cleanup
 - Compile and run test suite during build
-- Re-generate ltmain.sh to get rid of --rpath in gd-progs
+- Using chrpath to get rid of --rpath in gd-progs
 
 * Fri Jul 27 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.35-18
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
