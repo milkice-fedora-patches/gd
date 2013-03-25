@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.35
-Release:       23%{?dist}
+Release:       24%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://www.libgd.org/Main_Page
@@ -21,6 +21,7 @@ Patch13:       gd-sa1.patch
 Patch14:       gd-sa2.patch
 Patch15:       gd-sa3.patch
 Patch16:       gd-sa4.patch
+Patch17:       gd-aarch64.patch
 BuildRequires: freetype-devel, fontconfig-devel, libX11-devel, libXpm-devel
 BuildRequires: libjpeg-devel, libpng-devel, zlib-devel, pkgconfig
 # we need cmake for building test suite
@@ -74,6 +75,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch14 -p1 -b .sa2
 %patch15 -p1 -b .sa3
 %patch16 -p1 -b .sa4
+%patch17 -p1 -b .aarch64
 
 %build
 %configure --disable-rpath
@@ -117,6 +119,9 @@ popd
 %{_libdir}/pkgconfig/gdlib.pc
 
 %changelog
+* Mon Mar 25 2013 Honza Horak <hhorak@redhat.com> - 2.0.35-24
+- Fix build on aarch64
+
 * Mon Mar 25 2013 Honza Horak <hhorak@redhat.com> - 2.0.35-23
 - Fix issues found by Coverity
 
