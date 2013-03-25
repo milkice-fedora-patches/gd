@@ -1,7 +1,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.35
-Release:       20%{?dist}
+Release:       23%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://www.libgd.org/Main_Page
@@ -117,8 +117,17 @@ popd
 %{_libdir}/pkgconfig/gdlib.pc
 
 %changelog
-* Mon Mar 25 2013 Honza Horak <hhorak@redhat.com> - 2.0.35-20
+* Mon Mar 25 2013 Honza Horak <hhorak@redhat.com> - 2.0.35-23
 - Fix issues found by Coverity
+
+* Wed Feb 13 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.35-22
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
+
+* Fri Jan 18 2013 Adam Tkac <atkac redhat com> - 2.0.35-21
+- rebuild due to "jpeg8-ABI" feature drop
+
+* Fri Dec 21 2012 Adam Tkac <atkac redhat com> - 2.0.35-20
+- rebuild against new libjpeg
 
 * Tue Aug 28 2012 Honza Horak <hhorak@redhat.com> - 2.0.35-19
 - Spec file cleanup
