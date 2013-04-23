@@ -1,19 +1,17 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.0.35
-Release:       24%{?dist}
+Release:       25%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://www.libgd.org/Main_Page
 Source0:       http://www.libgd.org/releases/%{name}-%{version}.tar.bz2
-Patch0:        gd-2.0.33-freetype.patch
 Patch3:        gd-2.0.34-multilib.patch
 Patch4:        gd-loop.patch
 Patch5:        gd-2.0.34-sparc64.patch
 Patch6:        gd-2.0.35-overflow.patch
 Patch7:        gd-2.0.35-AALineThick.patch
 Patch8:        gd-2.0.33-BoxBound.patch
-Patch9:        gd-2.0.34-fonts.patch
 Patch10:       gd-2.0.35-time.patch
 Patch11:       gd-2.0.35-security3.patch
 Patch12:       gd-2.0.35-runtests.patch
@@ -60,14 +58,12 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 
 %prep
 %setup -q
-%patch0 -p1 -b .freetype
 %patch3 -p1 -b .mlib
 %patch4 -p1 -b .loop
 %patch6 -p1 -b .overflow
 %patch5 -p1 -b .sparc64 
 %patch7 -p1 -b .AALineThick
 %patch8 -p1 -b .bb
-%patch9 -p1 -b .fonts
 %patch10 -p1 -b .time
 %patch11 -p1 -b .sec3
 %patch12 -p1 -b .runtests
@@ -78,6 +74,14 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch17 -p1 -b .aarch64
 
 %build
+# Provide a correct default font search path
+CFLAGS="$RPM_OPT_FLAGS -DDEFAULT_FONTPATH='\"\
+/usr/share/fonts/bitstream-vera:\
+/usr/share/fonts/dejavu:\
+/usr/share/fonts/default/Type1:\
+/usr/share/X11/fonts/Type1:\
+/usr/share/fonts/liberation\"'"
+
 %configure --disable-rpath
 make %{?_smp_mflags}
 
@@ -119,6 +123,10 @@ popd
 %{_libdir}/pkgconfig/gdlib.pc
 
 %changelog
+* Tue Apr 23 2013 Remi Collet <rcollet@redhat.com> - 2.0.35-25
+- drop uneeded patch
+- really set default font search path
+
 * Mon Mar 25 2013 Honza Horak <hhorak@redhat.com> - 2.0.35-24
 - Fix build on aarch64
 
@@ -376,7 +384,7 @@ popd
 * Tue Jun 27 2000 Nalin Dahyabhai <nalin@redhat.com> 
 - update to 1.8.3
 
-* Sat Jun  4 2000 Nalin Dahyabhai <nalin@redhat.com> 
+* Sun Jun  4 2000 Nalin Dahyabhai <nalin@redhat.com>
 - rebuild in new environment
 
 * Mon May 22 2000 Nalin Dahyabhai <nalin@redhat.com> 
