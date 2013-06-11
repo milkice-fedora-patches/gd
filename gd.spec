@@ -1,29 +1,36 @@
+#global prever    rc2
+%global commit    725ba9de4005144d137d2a7a70f760068fc3d306
+%global short     %(c=%{commit}; echo ${c:0:7})
+
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
-Version:       2.0.35
-Release:       25%{?dist}
+Version:       2.1.0
+Release:       0.1.%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
-URL:           http://www.libgd.org/Main_Page
-Source0:       http://www.libgd.org/releases/%{name}-%{version}.tar.bz2
-Patch3:        gd-2.0.34-multilib.patch
-Patch4:        gd-loop.patch
-Patch5:        gd-2.0.34-sparc64.patch
-Patch6:        gd-2.0.35-overflow.patch
-Patch7:        gd-2.0.35-AALineThick.patch
-Patch8:        gd-2.0.33-BoxBound.patch
-Patch10:       gd-2.0.35-time.patch
-Patch11:       gd-2.0.35-security3.patch
-Patch12:       gd-2.0.35-runtests.patch
-Patch13:       gd-sa1.patch
-Patch14:       gd-sa2.patch
-Patch15:       gd-sa3.patch
-Patch16:       gd-sa4.patch
-Patch17:       gd-aarch64.patch
-BuildRequires: freetype-devel, fontconfig-devel, libX11-devel, libXpm-devel
-BuildRequires: libjpeg-devel, libpng-devel, zlib-devel, pkgconfig
-# we need cmake for building test suite
-BuildRequires: cmake, chrpath
+URL:           http://libgd.bitbucket.org/
+%if 0%{?commit:1}
+# git clone git@bitbucket.org:libgd/gd-libgd.git; cd gd-libgd
+# git archive  --format=tgz --output=libgd-2.1.0-$(git rev-parse master).tgz --prefix=libgd-2.1.0/  master
+Source0:       libgd-%{version}-%{commit}.tgz
+%else
+Source0:       https://bitbucket.org/libgd/gd-libgd/downloads/libgd-%{version}%{?prever:-%{prever}}.tar.xz
+%endif
+Patch1:        gd-2.1.0-multilib.patch
+
+BuildRequires: freetype-devel
+BuildRequires: fontconfig-devel
+BuildRequires: gettext-devel
+BuildRequires: libjpeg-devel
+BuildRequires: libpng-devel
+BuildRequires: libtiff-devel
+BuildRequires: libvpx-devel
+BuildRequires: libX11-devel
+BuildRequires: libXpm-devel
+BuildRequires: zlib-devel
+BuildRequires: pkgconfig
+BuildRequires: libtool
+
 
 %description
 The gd graphics library allows your code to quickly draw images
@@ -35,7 +42,7 @@ browsers. Note that gd is not a paint program.
 
 
 %package progs
-Requires:       gd = %{version}-%{release}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
 Summary:        Utility programs that use libgd
 Group:          Applications/Multimedia
 
@@ -47,31 +54,33 @@ graphics library for creating PNG and JPEG images.
 %package devel
 Summary:  The development libraries and header files for gd
 Group:    Development/Libraries
-Requires: gd = %{version}-%{release}
-Requires: libX11-devel, libXpm-devel, libjpeg-devel, freetype-devel
-Requires: libpng-devel, zlib-devel, fontconfig-devel
-Requires: pkgconfig
+Requires: %{name}%{?_isa} = %{version}-%{release}
+Requires: freetype-devel%{?_isa}
+Requires: fontconfig-devel%{?_isa}
+Requires: libjpeg-devel%{?_isa}
+Requires: libpng-devel%{?_isa}
+Requires: libtiff-devel%{?_isa}
+Requires: libvpx-devel%{?_isa}
+Requires: libX11-devel%{?_isa}
+Requires: libXpm-devel%{?_isa}
+Requires: zlib-devel%{?_isa}
 
 %description devel
 The gd-devel package contains the development libraries and header
 files for gd, a graphics library for creating PNG and JPEG graphics.
 
+
 %prep
-%setup -q
-%patch3 -p1 -b .mlib
-%patch4 -p1 -b .loop
-%patch6 -p1 -b .overflow
-%patch5 -p1 -b .sparc64 
-%patch7 -p1 -b .AALineThick
-%patch8 -p1 -b .bb
-%patch10 -p1 -b .time
-%patch11 -p1 -b .sec3
-%patch12 -p1 -b .runtests
-%patch13 -p1 -b .sa1
-%patch14 -p1 -b .sa2
-%patch15 -p1 -b .sa3
-%patch16 -p1 -b .sa4
-%patch17 -p1 -b .aarch64
+%setup -q -n libgd-%{version}%{?prever:-%{prever}}
+%patch1 -p1 -b .mlib
+
+# (re)generate autotool stuff
+if [ -f configure ]; then
+   autoreconf -fi
+else
+   ./bootstrap.sh
+fi
+
 
 %build
 # Provide a correct default font search path
@@ -82,33 +91,29 @@ CFLAGS="$RPM_OPT_FLAGS -DDEFAULT_FONTPATH='\"\
 /usr/share/X11/fonts/Type1:\
 /usr/share/fonts/liberation\"'"
 
-%configure --disable-rpath
+%configure \
+    --with-tiff=%{_prefix} \
+    --disable-rpath
 make %{?_smp_mflags}
+
 
 %install
 make install INSTALL='install -p' DESTDIR=$RPM_BUILD_ROOT 
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.la
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
 
-# Using the last resort to remove rpath, another tricks didn't help
-chrpath --delete $RPM_BUILD_ROOT%{_bindir}/{pngtogd,gdparttopng,annotate,gdcmpgif,gdtopng,webpng,pngtogd2,gd2togif,gd2copypal,giftogd2,gd2topng}
 
 %check
-pushd tests
-cmake -DBUILD_TEST=1 \
-      -DGD_INCLUDE_DIR="`pwd`/.." \
-      -DGD_LIBS_DIR="`pwd`/../.libs" \
-      -DGD_SOURCE_DIR="`pwd`/.." .
-CPATH="`pwd`/gdtest" make
-make test
-popd
+make check
+
 
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
 
+
 %files
-%doc COPYING README-JPEG.TXT index.html NEWS
+%doc COPYING
 %{_libdir}/*.so.*
 
 %files progs
@@ -116,13 +121,17 @@ popd
 %exclude %{_bindir}/gdlib-config
 
 %files devel
-%doc index.html
+%doc ChangeLog
 %{_bindir}/gdlib-config
 %{_includedir}/*
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/gdlib.pc
 
+
 %changelog
+* Tue Jun 11 2013 Remi Collet <rcollet@redhat.com> - 2.1.0-0.1.725ba9d
+- update to 2.1.0 (post RC2 git snapshot)
+
 * Tue Apr 23 2013 Remi Collet <rcollet@redhat.com> - 2.0.35-25
 - drop uneeded patch
 - really set default font search path
