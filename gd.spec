@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.1.0
-Release:       0.1.%{?prever}%{?short}%{?dist}
+Release:       0.2.%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.bitbucket.org/
@@ -129,6 +129,9 @@ make check
 
 
 %changelog
+* Tue Jun 25 2013 Remi Collet <rcollet@redhat.com> - 2.1.0-0.2.725ba9d
+- rebuild for linpng 1.6
+
 * Tue Jun 11 2013 Remi Collet <rcollet@redhat.com> - 2.1.0-0.1.725ba9d
 - update to 2.1.0 (post RC2 git snapshot)
 
