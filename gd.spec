@@ -1,11 +1,11 @@
 #global prever    rc2
-%global commit    725ba9de4005144d137d2a7a70f760068fc3d306
-%global short     %(c=%{commit}; echo ${c:0:7})
+#global commit    725ba9de4005144d137d2a7a70f760068fc3d306
+#global short     %(c=%{commit}; echo ${c:0:7})
 
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.1.0
-Release:       0.2.%{?prever}%{?short}%{?dist}
+Release:       1%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.bitbucket.org/
@@ -74,7 +74,13 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %setup -q -n libgd-%{version}%{?prever:-%{prever}}
 %patch1 -p1 -b .mlib
 
-# (re)generate autotool stuff
+# https://bitbucket.org/libgd/gd-libgd/issue/77
+sed -e '/GD_VERSION_STRING/s/-alpha//' \
+    -e '/GD_EXTRA_VERSION/s/alpha//' \
+    -i src/gd.h
+grep VERSION src/gd.h
+
+: regenerate autotool stuff
 if [ -f configure ]; then
    autoreconf -fi
 else
@@ -92,6 +98,7 @@ CFLAGS="$RPM_OPT_FLAGS -DDEFAULT_FONTPATH='\"\
 /usr/share/fonts/liberation\"'"
 
 %configure \
+    --with-vpx=%{_prefix} \
     --with-tiff=%{_prefix} \
     --disable-rpath
 make %{?_smp_mflags}
@@ -129,6 +136,9 @@ make check
 
 
 %changelog
+* Tue Jun 25 2013 Remi Collet <remi@fedoraproject.org> - 2.1.0-1
+- update to 2.1.0 final
+
 * Tue Jun 25 2013 Remi Collet <rcollet@redhat.com> - 2.1.0-0.2.725ba9d
 - rebuild for linpng 1.6
 
