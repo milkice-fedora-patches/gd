@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.1.0
-Release:       1%{?prever}%{?short}%{?dist}
+Release:       2%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.bitbucket.org/
@@ -136,6 +136,9 @@ make check
 
 
 %changelog
+* Wed Jul 17 2013 Petr Pisar <ppisar@redhat.com> - 2.1.0-2
+- Perl 5.18 rebuild
+
 * Tue Jun 25 2013 Remi Collet <remi@fedoraproject.org> - 2.1.0-1
 - update to 2.1.0 final
 
