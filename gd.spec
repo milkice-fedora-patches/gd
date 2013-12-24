@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.1.0
-Release:       3%{?prever}%{?short}%{?dist}
+Release:       4%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.bitbucket.org/
@@ -17,6 +17,7 @@ Source0:       libgd-%{version}-%{commit}.tgz
 Source0:       https://bitbucket.org/libgd/gd-libgd/downloads/libgd-%{version}%{?prever:-%{prever}}.tar.xz
 %endif
 Patch1:        gd-2.1.0-multilib.patch
+Patch2:        gd-fixautoconf.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -73,6 +74,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %prep
 %setup -q -n libgd-%{version}%{?prever:-%{prever}}
 %patch1 -p1 -b .mlib
+%patch2 -p1 -b .automake
 
 # https://bitbucket.org/libgd/gd-libgd/issue/77
 sed -e '/GD_VERSION_STRING/s/-alpha//' \
@@ -82,7 +84,8 @@ grep VERSION src/gd.h
 
 : regenerate autotool stuff
 if [ -f configure ]; then
-   autoreconf -fi
+   libtoolize --copy --force
+   autoreconf -vif
 else
    ./bootstrap.sh
 fi
@@ -136,6 +139,9 @@ make check
 
 
 %changelog
+* Mon Dec 23 2013 Peter Robinson <pbrobinson@fedoraproject.org> 2.1.0-4
+- Fix FTBFS
+
 * Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.1.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
