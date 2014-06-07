@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.1.0
-Release:       4%{?prever}%{?short}%{?dist}
+Release:       5%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.bitbucket.org/
@@ -139,6 +139,9 @@ make check
 
 
 %changelog
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.1.0-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
 * Mon Dec 23 2013 Peter Robinson <pbrobinson@fedoraproject.org> 2.1.0-4
 - Fix FTBFS
 
