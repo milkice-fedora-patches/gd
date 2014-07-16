@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.1.0
-Release:       5%{?prever}%{?short}%{?dist}
+Release:       6%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.bitbucket.org/
@@ -18,6 +18,7 @@ Source0:       https://bitbucket.org/libgd/gd-libgd/downloads/libgd-%{version}%{
 %endif
 Patch1:        gd-2.1.0-multilib.patch
 Patch2:        gd-fixautoconf.patch
+Patch3:	       gd-2.1.0-color_c_null_pointer.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -75,6 +76,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %setup -q -n libgd-%{version}%{?prever:-%{prever}}
 %patch1 -p1 -b .mlib
 %patch2 -p1 -b .automake
+%patch3 -p1 -b .color_c_null_pointer
 
 # https://bitbucket.org/libgd/gd-libgd/issue/77
 sed -e '/GD_VERSION_STRING/s/-alpha//' \
@@ -139,6 +141,10 @@ make check
 
 
 %changelog
+* Wed Jul 16 2014 Jozef Mlich <jmlich@redhat.com> - 2.1.0-6
+- Resolves: #1076676 CVE-2014-2497
+  NULL pointer dereference in gdImageCreateFromXpm()
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.1.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
