@@ -4,8 +4,8 @@
 
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
-Version:       2.1.0
-Release:       8%{?prever}%{?short}%{?dist}
+Version:       2.1.1
+Release:       1%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.bitbucket.org/
@@ -17,8 +17,6 @@ Source0:       libgd-%{version}-%{commit}.tgz
 Source0:       https://bitbucket.org/libgd/gd-libgd/downloads/libgd-%{version}%{?prever:-%{prever}}.tar.xz
 %endif
 Patch1:        gd-2.1.0-multilib.patch
-Patch2:        gd-fixautoconf.patch
-Patch3:        gd-2.1.0-color_c_null_pointer.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -75,8 +73,6 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %prep
 %setup -q -n libgd-%{version}%{?prever:-%{prever}}
 %patch1 -p1 -b .mlib
-%patch2 -p1 -b .automake
-%patch3 -p1 -b .color_c_null_pointer
 
 # https://bitbucket.org/libgd/gd-libgd/issue/77
 sed -e '/GD_VERSION_STRING/s/-alpha//' \
@@ -141,7 +137,11 @@ make check
 
 
 %changelog
-* Thu Jan 08 2015 Jozef Mlich <jmlich@redhat.com - 2.1.0-8
+* Wed Jan 14 2015 Jozef Mlich <jmlich@redhat.com> - 2.1.1-1
+- Update to 2.1.1 final
+  Resolves: #1181972
+
+* Thu Jan 08 2015 Jozef Mlich <jmlich@redhat.com> - 2.1.0-8
 - Resolves: #1076676 CVE-2014-2497
   Previous patch indroduced memory leak. Using upstream version.
   https://bitbucket.org/libgd/gd-libgd/commits/463c3bd09bfe8e924e19acad7a2a6af16953a704
