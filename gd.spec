@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.1.1
-Release:       1%{?prever}%{?short}%{?dist}
+Release:       2%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.bitbucket.org/
@@ -16,6 +16,9 @@ Source0:       libgd-%{version}-%{commit}.tgz
 %else
 Source0:       https://bitbucket.org/libgd/gd-libgd/downloads/libgd-%{version}%{?prever:-%{prever}}.tar.xz
 %endif
+# Missing in official archive, need for autoreconf
+Source2:       getver.pl
+
 Patch1:        gd-2.1.0-multilib.patch
 
 BuildRequires: freetype-devel
@@ -30,6 +33,7 @@ BuildRequires: libXpm-devel
 BuildRequires: zlib-devel
 BuildRequires: pkgconfig
 BuildRequires: libtool
+BuildRequires: perl
 
 
 %description
@@ -48,7 +52,7 @@ Group:          Applications/Multimedia
 
 %description progs
 The gd-progs package includes utility programs supplied with gd, a
-graphics library for creating PNG and JPEG images. 
+graphics library for creating PNG and JPEG images.
 
 
 %package devel
@@ -74,11 +78,10 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %setup -q -n libgd-%{version}%{?prever:-%{prever}}
 %patch1 -p1 -b .mlib
 
-# https://bitbucket.org/libgd/gd-libgd/issue/77
-sed -e '/GD_VERSION_STRING/s/-alpha//' \
-    -e '/GD_EXTRA_VERSION/s/alpha//' \
-    -i src/gd.h
-grep VERSION src/gd.h
+# Workaround for missing file
+cp %{SOURCE2} config/getver.pl
+
+: $(perl config/getver.pl)
 
 : regenerate autotool stuff
 if [ -f configure ]; then
@@ -106,13 +109,17 @@ make %{?_smp_mflags}
 
 
 %install
-make install INSTALL='install -p' DESTDIR=$RPM_BUILD_ROOT 
+make install INSTALL='install -p' DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.la
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
 
 
 %check
+: Upstream test suite
 make check
+
+: Check content of pkgconfig
+grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %post -p /sbin/ldconfig
@@ -121,7 +128,8 @@ make check
 
 
 %files
-%doc COPYING
+%{!?_licensedir:%global license %%doc}
+%license COPYING
 %{_libdir}/*.so.*
 
 %files progs
@@ -137,6 +145,10 @@ make check
 
 
 %changelog
+* Mon Mar 23 2015 Remi Collet <remi@fedoraproject.org> - 2.1.1-2
+- fix version in gdlib.pc
+- fix license handling
+
 * Wed Jan 14 2015 Jozef Mlich <jmlich@redhat.com> - 2.1.1-1
 - Update to 2.1.1 final
   Resolves: #1181972
