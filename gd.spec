@@ -20,6 +20,7 @@ Source0:       https://bitbucket.org/libgd/gd-libgd/downloads/libgd-%{version}%{
 Source2:       getver.pl
 
 Patch1:        gd-2.1.0-multilib.patch
+Patch2:        gd-2.1.1-libvpx.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -77,6 +78,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %prep
 %setup -q -n libgd-%{version}%{?prever:-%{prever}}
 %patch1 -p1 -b .mlib
+%patch2 -p1 -b .vpx
 
 # Workaround for missing file
 cp %{SOURCE2} config/getver.pl
