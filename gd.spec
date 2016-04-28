@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.1.1
-Release:       6%{?prever}%{?short}%{?dist}
+Release:       7%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.bitbucket.org/
@@ -18,9 +18,12 @@ Source0:       https://bitbucket.org/libgd/gd-libgd/downloads/libgd-%{version}%{
 %endif
 # Missing in official archive, need for autoreconf
 Source2:       getver.pl
+# Test data for CVE-2016-3074 test
+Source3:       invalid_neg_size.gd2
 
 Patch1:        gd-2.1.0-multilib.patch
 Patch2:        gd-2.1.1-libvpx.patch
+Patch3:        gd-heap-overflow.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -79,6 +82,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %setup -q -n libgd-%{version}%{?prever:-%{prever}}
 %patch1 -p1 -b .mlib
 %patch2 -p1 -b .vpx
+%patch3 -p1
 
 # Workaround for missing file
 cp %{SOURCE2} config/getver.pl
@@ -117,6 +121,8 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
 
 
 %check
+cp %SOURCE3 tests/gd2/
+
 : Upstream test suite
 make check
 
@@ -147,6 +153,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Thu Apr 28 2016 Marek Skalicky <mskalick@redhat.com> - 2.1.1-7
+- Fixed heap overflow (CVE-2016-3074)
+
 * Wed Feb 03 2016 Fedora Release Engineering <releng@fedoraproject.org> - 2.1.1-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
