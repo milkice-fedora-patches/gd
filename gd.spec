@@ -4,17 +4,17 @@
 
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
-Version:       2.1.1
-Release:       7%{?prever}%{?short}%{?dist}
+Version:       2.2.1
+Release:       1%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
-URL:           http://libgd.bitbucket.org/
+URL:           http://libgd.github.io/
 %if 0%{?commit:1}
-# git clone git@bitbucket.org:libgd/gd-libgd.git; cd gd-libgd
-# git archive  --format=tgz --output=libgd-2.1.0-$(git rev-parse master).tgz --prefix=libgd-2.1.0/  master
+# git clone https://github.com/libgd/libgd.git; cd gd-libgd
+# git archive  --format=tgz --output=libgd-%{version}-%{commit}.tgz --prefix=libgd-%{version}/  master
 Source0:       libgd-%{version}-%{commit}.tgz
 %else
-Source0:       https://bitbucket.org/libgd/gd-libgd/downloads/libgd-%{version}%{?prever:-%{prever}}.tar.xz
+Source0:       https://github.com/libgd/libgd/releases/download/gd-2.2.1/libgd-2.2.1.tar.xz
 %endif
 # Missing in official archive, need for autoreconf
 Source2:       getver.pl
@@ -22,8 +22,8 @@ Source2:       getver.pl
 Source3:       invalid_neg_size.gd2
 
 Patch1:        gd-2.1.0-multilib.patch
-Patch2:        gd-2.1.1-libvpx.patch
-Patch3:        gd-heap-overflow.patch
+Patch2:        gd-2.2.1-initialize-full_filename.patch
+Patch3:        gd-2.2.1-fix-unused-variable-in-tests.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -31,7 +31,7 @@ BuildRequires: gettext-devel
 BuildRequires: libjpeg-devel
 BuildRequires: libpng-devel
 BuildRequires: libtiff-devel
-BuildRequires: libvpx-devel
+BuildRequires: libwebp-devel
 BuildRequires: libX11-devel
 BuildRequires: libXpm-devel
 BuildRequires: zlib-devel
@@ -68,7 +68,7 @@ Requires: fontconfig-devel%{?_isa}
 Requires: libjpeg-devel%{?_isa}
 Requires: libpng-devel%{?_isa}
 Requires: libtiff-devel%{?_isa}
-Requires: libvpx-devel%{?_isa}
+Requires: libwebp-devel%{?_isa}
 Requires: libX11-devel%{?_isa}
 Requires: libXpm-devel%{?_isa}
 Requires: zlib-devel%{?_isa}
@@ -81,8 +81,8 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %prep
 %setup -q -n libgd-%{version}%{?prever:-%{prever}}
 %patch1 -p1 -b .mlib
-%patch2 -p1 -b .vpx
-%patch3 -p1
+%patch2 -p1 -b .full_filename
+%patch3 -p1 -b .unused-variable
 
 # Workaround for missing file
 cp %{SOURCE2} config/getver.pl
@@ -108,7 +108,6 @@ CFLAGS="$RPM_OPT_FLAGS -DDEFAULT_FONTPATH='\"\
 /usr/share/fonts/liberation\"'"
 
 %configure \
-    --with-vpx=%{_prefix} \
     --with-tiff=%{_prefix} \
     --disable-rpath
 make %{?_smp_mflags}
@@ -153,6 +152,10 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Fri May 27 2016 Marek Skalicky <mskalick@redhat.com> - 2.2.1-1
+- Upgrade to 2.2.1 release
+- Upstream moved to github.com
+
 * Thu Apr 28 2016 Marek Skalicky <mskalick@redhat.com> - 2.1.1-7
 - Fixed heap overflow (CVE-2016-3074)
 
