@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.2.1
-Release:       1%{?prever}%{?short}%{?dist}
+Release:       2%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.github.io/
@@ -14,12 +14,8 @@ URL:           http://libgd.github.io/
 # git archive  --format=tgz --output=libgd-%{version}-%{commit}.tgz --prefix=libgd-%{version}/  master
 Source0:       libgd-%{version}-%{commit}.tgz
 %else
-Source0:       https://github.com/libgd/libgd/releases/download/gd-2.2.1/libgd-2.2.1.tar.xz
+Source0:       https://github.com/libgd/libgd/releases/download/gd-%{version}/libgd-%{version}.tar.xz
 %endif
-# Missing in official archive, need for autoreconf
-Source2:       getver.pl
-# Test data for CVE-2016-3074 test
-Source3:       invalid_neg_size.gd2
 
 Patch1:        gd-2.1.0-multilib.patch
 Patch2:        gd-2.2.1-initialize-full_filename.patch
@@ -84,9 +80,6 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch2 -p1 -b .full_filename
 %patch3 -p1 -b .unused-variable
 
-# Workaround for missing file
-cp %{SOURCE2} config/getver.pl
-
 : $(perl config/getver.pl)
 
 : regenerate autotool stuff
@@ -120,8 +113,6 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
 
 
 %check
-cp %SOURCE3 tests/gd2/
-
 : Upstream test suite
 make check
 
@@ -152,6 +143,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Sat May 28 2016 Remi Collet <remi@fedoraproject.org> - 2.2.1-2
+- remove unneeded sources
+
 * Fri May 27 2016 Marek Skalicky <mskalick@redhat.com> - 2.2.1-1
 - Upgrade to 2.2.1 release
 - Upstream moved to github.com
