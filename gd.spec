@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.1.1
-Release:       5%{?prever}%{?short}%{?dist}
+Release:       6%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.bitbucket.org/
@@ -23,7 +23,12 @@ Source3:       invalid_neg_size.gd2
 
 Patch1:        gd-2.1.0-multilib.patch
 Patch2:        gd-2.1.1-libvpx.patch
+# CVE-2016-3074
 Patch3:        gd-heap-overflow.patch
+# CVE-2015-8877
+Patch4:        gd-2.1.1-gdImagreScaleTwoPass-leak.patch
+# CVE-2016-5116
+Patch5:        gd-2.1.1-xbm-large-names-overflow.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -83,6 +88,8 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch1 -p1 -b .mlib
 %patch2 -p1 -b .vpx
 %patch3 -p1
+%patch4 -p1 -b .image-scale
+%patch5 -p1 -b .xbm-overflow
 
 # Workaround for missing file
 cp %{SOURCE2} config/getver.pl
@@ -153,6 +160,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Thu May 31 2016 Marek Skalicky <mskalick@redhat.com> - 2.1.1-6
+- Backported fixes of two memory leaks (CVE-2015-8877, CVE-2016-5116)
+
 * Thu Apr 28 2016 Marek Skalicky <mskalick@redhat.com> - 2.1.1-5
 - Fixed heap overflow (CVE-2016-3074)
 
