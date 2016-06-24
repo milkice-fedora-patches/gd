@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.1.1
-Release:       6%{?prever}%{?short}%{?dist}
+Release:       7%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.bitbucket.org/
@@ -29,6 +29,8 @@ Patch3:        gd-heap-overflow.patch
 Patch4:        gd-2.1.1-gdImagreScaleTwoPass-leak.patch
 # CVE-2016-5116
 Patch5:        gd-2.1.1-xbm-large-names-overflow.patch
+# CVE-2015-8874
+Patch6:        gd-2.1.1-CVE-2015-8874.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -90,6 +92,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch3 -p1
 %patch4 -p1 -b .image-scale
 %patch5 -p1 -b .xbm-overflow
+%patch6 -p1 -b .cve-2015-8874
 
 # Workaround for missing file
 cp %{SOURCE2} config/getver.pl
@@ -160,6 +163,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Fri Jun 24 2016 Remi Collet <remi@fedoraproject.org> - 2.1.1-7
+- fix for stack overflow with gdImageFillToBorder (CVE-2015-8874)
+
 * Thu May 31 2016 Marek Skalicky <mskalick@redhat.com> - 2.1.1-6
 - Backported fixes of two memory leaks (CVE-2015-8877, CVE-2016-5116)
 
