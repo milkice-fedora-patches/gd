@@ -4,8 +4,8 @@
 
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
-Version:       2.2.1
-Release:       2%{?prever}%{?short}%{?dist}
+Version:       2.2.2
+Release:       1%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.github.io/
@@ -19,7 +19,6 @@ Source0:       https://github.com/libgd/libgd/releases/download/gd-%{version}/li
 
 Patch1:        gd-2.1.0-multilib.patch
 Patch2:        gd-2.2.1-initialize-full_filename.patch
-Patch3:        gd-2.2.1-fix-unused-variable-in-tests.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -79,7 +78,6 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %setup -q -n libgd-%{version}%{?prever:-%{prever}}
 %patch1 -p1 -b .mlib
 %patch2 -p1 -b .full_filename
-%patch3 -p1 -b .unused-variable
 
 : $(perl config/getver.pl)
 
@@ -114,6 +112,11 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
 
 
 %check
+%ifarch %{ix86}
+# see https://github.com/libgd/libgd/issues/242
+export XFAIL_TESTS="gdimagerotate/bug00067 $XFAIL_TESTS"
+%endif
+
 : Upstream test suite
 make check
 
@@ -144,6 +147,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Fri Jun 24 2016 Remi Collet <remi@fedoraproject.org> - 2.2.2-1
+- Update to 2.2.2
+
 * Sat May 28 2016 Remi Collet <remi@fedoraproject.org> - 2.2.1-2
 - remove unneeded sources
 
