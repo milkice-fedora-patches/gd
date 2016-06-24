@@ -34,6 +34,7 @@ BuildRequires: zlib-devel
 BuildRequires: pkgconfig
 BuildRequires: libtool
 BuildRequires: perl
+BuildRequires: perl-generators
 
 
 %description
