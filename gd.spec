@@ -4,7 +4,7 @@
 
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
-Version:       2.2.2
+Version:       2.2.3
 Release:       1%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
@@ -18,7 +18,6 @@ Source0:       https://github.com/libgd/libgd/releases/download/gd-%{version}/li
 %endif
 
 Patch1:        gd-2.1.0-multilib.patch
-Patch2:        gd-2.2.1-initialize-full_filename.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -77,7 +76,6 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %prep
 %setup -q -n libgd-%{version}%{?prever:-%{prever}}
 %patch1 -p1 -b .mlib
-%patch2 -p1 -b .full_filename
 
 : $(perl config/getver.pl)
 
@@ -99,6 +97,11 @@ CFLAGS="$RPM_OPT_FLAGS -DDEFAULT_FONTPATH='\"\
 /usr/share/X11/fonts/Type1:\
 /usr/share/fonts/liberation\"'"
 
+%ifarch %{ix86}
+# see https://github.com/libgd/libgd/issues/242
+CFLAGS="$CFLAGS -msse -mfpmath=sse"
+%endif
+
 %configure \
     --with-tiff=%{_prefix} \
     --disable-rpath
@@ -112,11 +115,6 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
 
 
 %check
-%ifarch %{ix86}
-# see https://github.com/libgd/libgd/issues/242
-export XFAIL_TESTS="gdimagerotate/bug00067 $XFAIL_TESTS"
-%endif
-
 : Upstream test suite
 make check
 
@@ -147,6 +145,10 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Fri Jul 22 2016 Remi Collet <remi@fedoraproject.org> - 2.2.3-1
+- Update to 2.2.3
+- use -msse -mfpmath=sse build options (x86-32)
+
 * Fri Jun 24 2016 Remi Collet <remi@fedoraproject.org> - 2.2.2-1
 - Update to 2.2.2
 
