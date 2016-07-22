@@ -18,6 +18,7 @@ Source0:       https://github.com/libgd/libgd/releases/download/gd-%{version}/li
 %endif
 
 Patch1:        gd-2.1.0-multilib.patch
+Patch2:        gd-2.2.3-tests.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -76,6 +77,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %prep
 %setup -q -n libgd-%{version}%{?prever:-%{prever}}
 %patch1 -p1 -b .mlib
+%patch2 -p1 -b .build
 
 : $(perl config/getver.pl)
 
