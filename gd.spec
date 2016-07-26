@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.2.3
-Release:       1%{?prever}%{?short}%{?dist}
+Release:       2%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.github.io/
@@ -104,6 +104,11 @@ CFLAGS="$RPM_OPT_FLAGS -DDEFAULT_FONTPATH='\"\
 CFLAGS="$CFLAGS -msse -mfpmath=sse"
 %endif
 
+%ifarch aarch64 ppc64 ppc64le s390 s390x
+# workaround for https://bugzilla.redhat.com/show_bug.cgi?id=1359680
+export CFLAGS="$CFLAGS -ffp-contract=off"
+%endif
+
 %configure \
     --with-tiff=%{_prefix} \
     --disable-rpath
@@ -147,6 +152,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Tue Jul 26 2016 Dan Horák <dan[at]danny.cz> - 2.2.3-2
+- apply workaround for rhbz#1359680
+
 * Fri Jul 22 2016 Remi Collet <remi@fedoraproject.org> - 2.2.3-1
 - Update to 2.2.3
 - use -msse -mfpmath=sse build options (x86-32)
