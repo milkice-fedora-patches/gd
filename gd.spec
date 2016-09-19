@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.1.1
-Release:       9%{?prever}%{?short}%{?dist}
+Release:       10%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.bitbucket.org/
@@ -28,7 +28,8 @@ Patch2:        gd-2.1.1-libvpx.patch
 # CVE-2016-3074
 Patch3:        gd-heap-overflow.patch
 # CVE-2015-8877
-Patch4:        gd-2.1.1-gdImagreScaleTwoPass-leak.patch
+# (included in patch gd-2.2.3-CVE-2016-6207.patch)
+#Patch4:        gd-2.1.1-gdImagreScaleTwoPass-leak.patch
 # CVE-2016-5116
 Patch5:        gd-2.1.1-xbm-large-names-overflow.patch
 # CVE-2015-8874
@@ -37,6 +38,9 @@ Patch6:        gd-2.1.1-CVE-2015-8874.patch
 Patch7:        gd-2.1.1-CVE-2016-5766.patch
 # CVE-2016-6161
 Patch8:        gd-2.2.3-CVE-2016-6161.patch
+# CVE-2016-6207
+# cherry-picked 0dd40 d3258 ff911 f60ec 7a28c commits from libgd master
+Patch9:        gd-2.2.3-CVE-2016-6207.patch
 
 
 BuildRequires: freetype-devel
@@ -97,11 +101,12 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch1 -p1 -b .mlib
 %patch2 -p1 -b .vpx
 %patch3 -p1
-%patch4 -p1 -b .image-scale
+#%patch4 -p1 -b .image-scale
 %patch5 -p1 -b .xbm-overflow
 %patch6 -p1 -b .cve-2015-8874
 %patch7 -p1 -b .cve-2016-5766
 %patch8 -p1 -b .cve-2016-6161
+%patch9 -p1 -b .cve-2016-6207
 
 # Workaround for missing file
 cp %{SOURCE2} config/getver.pl
@@ -174,6 +179,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Mon Sep 19 2016 Marek Skalický <mskalick@redhat.com> - 2.1.1-10
+- Fix CVE-2016-6207
+
 * Mon Sep 19 2016 Marek Skalický <mskalick@redhat.com> - 2.1.1-9
 - Fix out of bounds read when encoding gif from malformed input with gd2togif
   (CVE-2016-6161)
