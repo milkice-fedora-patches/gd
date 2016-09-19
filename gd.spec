@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.1.1
-Release:       8%{?prever}%{?short}%{?dist}
+Release:       9%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.bitbucket.org/
@@ -20,6 +20,8 @@ Source0:       https://bitbucket.org/libgd/gd-libgd/downloads/libgd-%{version}%{
 Source2:       getver.pl
 # Test data for CVE-2016-3074 test
 Source3:       invalid_neg_size.gd2
+# Test data for CVE-2016-6161 test
+Source4:       bug00209.gd2
 
 Patch1:        gd-2.1.0-multilib.patch
 Patch2:        gd-2.1.1-libvpx.patch
@@ -33,6 +35,9 @@ Patch5:        gd-2.1.1-xbm-large-names-overflow.patch
 Patch6:        gd-2.1.1-CVE-2015-8874.patch
 # CVE-2016-5766
 Patch7:        gd-2.1.1-CVE-2016-5766.patch
+# CVE-2016-6161
+Patch8:        gd-2.2.3-CVE-2016-6161.patch
+
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -96,9 +101,11 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch5 -p1 -b .xbm-overflow
 %patch6 -p1 -b .cve-2015-8874
 %patch7 -p1 -b .cve-2016-5766
+%patch8 -p1 -b .cve-2016-6161
 
 # Workaround for missing file
 cp %{SOURCE2} config/getver.pl
+
 
 : $(perl config/getver.pl)
 
@@ -135,6 +142,7 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
 
 %check
 cp %SOURCE3 tests/gd2/
+cp %SOURCE4 tests/gif/
 
 : Upstream test suite
 make check
@@ -166,13 +174,17 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Mon Sep 19 2016 Marek Skalický <mskalick@redhat.com> - 2.1.1-9
+- Fix out of bounds read when encoding gif from malformed input with gd2togif
+  (CVE-2016-6161)
+
 * Tue Jun 28 2016 Remi Collet <remi@fedoraproject.org> - 2.1.1-8
 - fix integer Overflow in _gd2GetHeader() (CVE-2016-5766)
 
 * Fri Jun 24 2016 Remi Collet <remi@fedoraproject.org> - 2.1.1-7
 - fix for stack overflow with gdImageFillToBorder (CVE-2015-8874)
 
-* Thu May 31 2016 Marek Skalicky <mskalick@redhat.com> - 2.1.1-6
+* Tue May 31 2016 Marek Skalicky <mskalick@redhat.com> - 2.1.1-6
 - Backported fixes of two memory leaks (CVE-2015-8877, CVE-2016-5116)
 
 * Thu Apr 28 2016 Marek Skalicky <mskalick@redhat.com> - 2.1.1-5
