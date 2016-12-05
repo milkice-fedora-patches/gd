@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.2.3
-Release:       3%{?prever}%{?short}%{?dist}
+Release:       4%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.github.io/
@@ -20,6 +20,7 @@ Source0:       https://github.com/libgd/libgd/releases/download/gd-%{version}/li
 Patch1:        gd-2.1.0-multilib.patch
 Patch2:        gd-2.2.3-tests.patch
 Patch3:        gd-2.2.3-overflow-in-gdImageWebpCtx.patch
+Patch4:        gd-2.2.3-dynamicGetbuf-negative-rlen.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -80,6 +81,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch1 -p1 -b .mlib
 %patch2 -p1 -b .build
 %patch3 -p1 -b .gdImageWebpCtx
+%patch4 -p1 -b .dynamicGetbuf
 
 : $(perl config/getver.pl)
 
@@ -154,6 +156,10 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Mon Dec 05 2016 Marek Skalický <mskalick@redhat.com> - 2.2.3-4
+- Fix stack based buffer overflow when passing negative `rlen` as size to
+  memcpy() (CVE-2016-8670)
+
 * Mon Dec 05 2016 Marek Skalický <mskalick@redhat.com> - 2.2.3-3
 - Fix possible overflow in gdImageWebpCtx (CVE-2016-7568)
 
