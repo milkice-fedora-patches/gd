@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.1.1
-Release:       10%{?prever}%{?short}%{?dist}
+Release:       11%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.bitbucket.org/
@@ -41,6 +41,14 @@ Patch8:        gd-2.2.3-CVE-2016-6161.patch
 # CVE-2016-6207
 # cherry-picked 0dd40 d3258 ff911 f60ec 7a28c commits from libgd master
 Patch9:        gd-2.2.3-CVE-2016-6207.patch
+# CVE-2016-7568
+Patch10:        gd-2.2.3-overflow-in-gdImageWebpCtx.patch
+# CVE-2016-8670
+Patch11:        gd-2.2.3-dynamicGetbuf-negative-rlen.patch
+# CVE-2016-6911
+# TODO - created by one of upstream maintainers, but not in upstream yet
+# https://github.com/libgd/libgd/pull/353
+Patch12:        gd-2.2.x-fix-invalid-read-in-gdImageCreateFromTiffPtr.patch
 
 
 BuildRequires: freetype-devel
@@ -107,6 +115,10 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch7 -p1 -b .cve-2016-5766
 %patch8 -p1 -b .cve-2016-6161
 %patch9 -p1 -b .cve-2016-6207
+%patch10 -p1 -b .gdImageWebpCtx
+%patch11 -p1 -b .dynamicGetbuf
+# Patch5 adds some non-text files (.tiff)
+patch -p1 --binary < %{PATCH12}
 
 # Workaround for missing file
 cp %{SOURCE2} config/getver.pl
@@ -179,6 +191,12 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Tue Dec 06 2016 Marek Skalický <mskalick@redhat.com> - 2.1.1-11
+- Fix invalid read in gdImageCreateFromTiffPtr() ( CVE-2016-6911)
+- Fix stack based buffer overflow when passing negative `rlen` as size to
+  memcpy() (CVE-2016-8670)
+- Fix possible overflow in gdImageWebpCtx (CVE-2016-7568)
+
 * Mon Sep 19 2016 Marek Skalický <mskalick@redhat.com> - 2.1.1-10
 - Fix CVE-2016-6207
 

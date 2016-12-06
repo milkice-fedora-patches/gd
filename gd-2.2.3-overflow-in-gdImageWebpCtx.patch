@@ -1,0 +1,27 @@
+diff --git a/src/gd_webp.c b/src/gd_webp.c
+index fae3861..a7ed222 100644
+--- a/src/gd_webp.c
++++ b/src/gd_webp.c
+@@ -179,6 +179,22 @@ BGD_DECLARE(void) gdImageWebpCtx (gdImagePtr im, gdIOCtx * outfile, int quantiza
+ 	/* Conversion to Y,U,V buffer */
+ 	yuv_width = (width + 1) >> 1;
+ 	yuv_height = (height + 1) >> 1;
++
++	if (overflow2(width, height)) {
++		return;
++	}
++
++	if (overflow2(2, yuv_width)) {
++		return;
++	}
++
++	if (overflow2(2 * yuv_width, yuv_height)) {
++		return;
++	}
++
++	if (overflow2(width * height + 2 * yuv_width * yuv_height, 1)) {
++		return;
++	}
+ 	yuv_nbytes = width * height + 2 * yuv_width * yuv_height;
+ 
+ 	if ((Y = (unsigned char *)gdCalloc(yuv_nbytes, sizeof(unsigned char))) == NULL) {
