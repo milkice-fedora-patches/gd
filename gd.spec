@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.2.3
-Release:       4%{?prever}%{?short}%{?dist}
+Release:       5%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.github.io/
@@ -21,6 +21,9 @@ Patch1:        gd-2.1.0-multilib.patch
 Patch2:        gd-2.2.3-tests.patch
 Patch3:        gd-2.2.3-overflow-in-gdImageWebpCtx.patch
 Patch4:        gd-2.2.3-dynamicGetbuf-negative-rlen.patch
+# TODO - created by one of upstream maintainers, but not in upstream yet
+# https://github.com/libgd/libgd/pull/353
+Patch5:        gd-2.2.x-fix-invalid-read-in-gdImageCreateFromTiffPtr.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -82,6 +85,16 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch2 -p1 -b .build
 %patch3 -p1 -b .gdImageWebpCtx
 %patch4 -p1 -b .dynamicGetbuf
+# Patch5 adds some non-text files (.tiff)
+patch -p1 --binary < %{PATCH5}
+
+%if 0%{?fedora} >= 26
+# TODO - tests using freetype 2.7 are failing
+# https://github.com/libgd/libgd/issues/302
+# https://github.com/libgd/libgd/issues/217
+sed -i -e "s|libgd_test_programs +=|libgd_freetype_test_program =|" tests/freetype/Makemodule.am
+sed -i -e "s|libgd_test_programs +=|libgd_freetype_test_program +=|" tests/gdimagestringft/Makemodule.am
+%endif
 
 : $(perl config/getver.pl)
 
@@ -156,6 +169,10 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Tue Dec 06 2016 Marek Skalický <mskalick@redhat.com> - 2.2.3-5
+- Fix invalid read in gdImageCreateFromTiffPtr() ( CVE-2016-6911)
+- Disable tests using freetype in Fedora 26 (freetype > 2.6)
+
 * Mon Dec 05 2016 Marek Skalický <mskalick@redhat.com> - 2.2.3-4
 - Fix stack based buffer overflow when passing negative `rlen` as size to
   memcpy() (CVE-2016-8670)
