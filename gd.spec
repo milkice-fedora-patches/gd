@@ -4,8 +4,8 @@
 
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
-Version:       2.2.3
-Release:       5%{?prever}%{?short}%{?dist}
+Version:       2.2.4
+Release:       1%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.github.io/
@@ -19,11 +19,7 @@ Source0:       https://github.com/libgd/libgd/releases/download/gd-%{version}/li
 
 Patch1:        gd-2.1.0-multilib.patch
 Patch2:        gd-2.2.3-tests.patch
-Patch3:        gd-2.2.3-overflow-in-gdImageWebpCtx.patch
-Patch4:        gd-2.2.3-dynamicGetbuf-negative-rlen.patch
-# TODO - created by one of upstream maintainers, but not in upstream yet
-# https://github.com/libgd/libgd/pull/353
-Patch5:        gd-2.2.x-fix-invalid-read-in-gdImageCreateFromTiffPtr.patch
+Patch3:        gd-2.2.4-upstream.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -39,6 +35,8 @@ BuildRequires: pkgconfig
 BuildRequires: libtool
 BuildRequires: perl
 BuildRequires: perl-generators
+# for fontconfig/basic test
+BuildRequires: liberation-sans-fonts
 
 
 %description
@@ -83,10 +81,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %setup -q -n libgd-%{version}%{?prever:-%{prever}}
 %patch1 -p1 -b .mlib
 %patch2 -p1 -b .build
-%patch3 -p1 -b .gdImageWebpCtx
-%patch4 -p1 -b .dynamicGetbuf
-# Patch5 adds some non-text files (.tiff)
-patch -p1 --binary < %{PATCH5}
+%patch3 -p1 -b .upstream
 
 %if 0%{?fedora} >= 26
 # TODO - tests using freetype 2.7 are failing
@@ -139,6 +134,18 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
 
 
 %check
+%ifarch %{ix86}
+# See https://github.com/libgd/libgd/issues/359
+XFAIL_TESTS="gdimagegrayscale/basic $XFAIL_TESTS"
+%endif
+%if 0%{?fedora} >= 26
+# See https://github.com/libgd/libgd/issues/363
+XFAIL_TESTS="freetype/bug00132 $XFAIL_TESTS"
+XFAIL_TESTS="gdimagestringft/gdimagestringft_bbox $XFAIL_TESTS"
+%endif
+
+export XFAIL_TESTS
+
 : Upstream test suite
 make check
 
@@ -161,7 +168,6 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 %exclude %{_bindir}/gdlib-config
 
 %files devel
-%doc ChangeLog
 %{_bindir}/gdlib-config
 %{_includedir}/*
 %{_libdir}/*.so
@@ -169,6 +175,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Wed Jan 18 2017 Remi Collet <remi@fedoraproject.org> - 2.2.4-1
+- Update to 2.2.4
+
 * Tue Dec 06 2016 Marek Skalický <mskalick@redhat.com> - 2.2.3-5
 - Fix invalid read in gdImageCreateFromTiffPtr() ( CVE-2016-6911)
 - Disable tests using freetype in Fedora 26 (freetype > 2.6)
