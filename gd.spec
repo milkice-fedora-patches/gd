@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.2.4
-Release:       1%{?prever}%{?short}%{?dist}
+Release:       2%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.github.io/
@@ -175,6 +175,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Wed Feb 01 2017 Sandro Mani <manisandro@gmail.com> - 2.2.4-2
+- Rebuild (libwebp)
+
 * Wed Jan 18 2017 Remi Collet <remi@fedoraproject.org> - 2.2.4-1
 - Update to 2.2.4
 
