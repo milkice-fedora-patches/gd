@@ -33,7 +33,7 @@ BuildRequires: libXpm-devel
 BuildRequires: zlib-devel
 BuildRequires: pkgconfig
 BuildRequires: libtool
-BuildRequires: perl
+BuildRequires: perl-interpreter
 BuildRequires: perl-generators
 # for fontconfig/basic test
 BuildRequires: liberation-sans-fonts
