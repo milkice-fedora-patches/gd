@@ -1,6 +1,10 @@
-#global prever    rc2
-#global commit    725ba9de4005144d137d2a7a70f760068fc3d306
-#global short     %(c=%{commit}; echo ${c:0:7})
+# requested by https://bugzilla.redhat.com/1468338
+# this break gdimagefile/gdnametest:
+#   gdimagefile/gdnametest.c:122: 255 pixels different on /tmp/gdtest.CrpdIb/img.gif
+#   gdimagefile/gdnametest.c:122: 255 pixels different on /tmp/gdtest.CrpdIb/img.GIF
+#   FAIL gdimagefile/gdnametest (exit status: 2)
+%global  with_liq   0
+
 
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
@@ -26,6 +30,9 @@ BuildRequires: libjpeg-devel
 BuildRequires: libpng-devel
 BuildRequires: libtiff-devel
 BuildRequires: libwebp-devel
+%if %{with_liq}
+BuildRequires: libimagequant-devel
+%endif
 BuildRequires: libX11-devel
 BuildRequires: libXpm-devel
 BuildRequires: zlib-devel
