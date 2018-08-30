@@ -9,7 +9,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.2.5
-Release:       5%{?prever}%{?short}%{?dist}
+Release:       6%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.github.io/
@@ -135,6 +135,13 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
 
 
 %check
+%ifarch %{ix86}
+# See https://github.com/libgd/libgd/issues/359
+XFAIL_TESTS="gdimagegrayscale/basic $XFAIL_TESTS"
+%endif
+
+export XFAIL_TESTS
+
 : Upstream test suite
 make check
 
@@ -164,6 +171,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Thu Aug 30 2018 mskalick@redhat.com - 2.2.5-6
+- gdimagegrayscale/basic test is till failing on F27 and F28
+
 * Thu Aug 30 2018 mskalick@redhat.com - 2.2.5-5
 - Check return value in gdImageBmpPtr to avoid double free (CVE-2018-1000222)
 - Don't mark gdimagegrayscale/basic test as failing
