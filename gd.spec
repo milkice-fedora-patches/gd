@@ -9,7 +9,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.2.5
-Release:       5%{?prever}%{?short}%{?dist}
+Release:       6%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.github.io/
@@ -46,6 +46,7 @@ BuildRequires: perl-interpreter
 BuildRequires: perl-generators
 # for fontconfig/basic test
 BuildRequires: liberation-sans-fonts
+BuildRequires: libimagequant-devel
 
 
 %description
@@ -164,6 +165,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Thu Aug 30 2018 mskalick@redhat.com - 2.2.5-6
+- Use libimagequant library (RHBZ#1468338)
+
 * Thu Aug 30 2018 mskalick@redhat.com - 2.2.5-5
 - Check return value in gdImageBmpPtr to avoid double free (CVE-2018-1000222)
 - Don't mark gdimagegrayscale/basic test as failing
