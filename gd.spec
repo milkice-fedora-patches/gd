@@ -9,7 +9,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.2.5
-Release:       4%{?prever}%{?short}%{?dist}
+Release:       5%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.github.io/
@@ -24,6 +24,8 @@ Source0:       https://github.com/libgd/libgd/releases/download/gd-%{version}/li
 Patch1:        gd-2.1.0-multilib.patch
 # CVE-2018-5711 - https://github.com/libgd/libgd/commit/a11f47475e6443b7f32d21f2271f28f417e2ac04
 Patch2:        gd-2.2.5-upstream.patch
+# CVE-2018-1000222 - https://github.com/libgd/libgd/commit/ac16bdf2d41724b5a65255d4c28fb0ec46bc42f5
+Patch3:        gd-2.2.5-gdImageBmpPtr-double-free.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -88,6 +90,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %setup -q -n libgd-%{version}%{?prever:-%{prever}}
 %patch1 -p1 -b .mlib
 %patch2 -p1 -b .upstream
+%patch3 -p1 -b .gdImageBmpPtr-free
 
 : $(perl config/getver.pl)
 
@@ -132,13 +135,6 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
 
 
 %check
-%ifarch %{ix86}
-# See https://github.com/libgd/libgd/issues/359
-XFAIL_TESTS="gdimagegrayscale/basic $XFAIL_TESTS"
-%endif
-
-export XFAIL_TESTS
-
 : Upstream test suite
 make check
 
@@ -168,6 +164,10 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Thu Aug 30 2018 mskalick@redhat.com - 2.2.5-5
+- Check return value in gdImageBmpPtr to avoid double free (CVE-2018-1000222)
+- Don't mark gdimagegrayscale/basic test as failing
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.2.5-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
