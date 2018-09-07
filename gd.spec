@@ -9,7 +9,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.2.5
-Release:       6%{?prever}%{?short}%{?dist}
+Release:       7%{?prever}%{?short}%{?dist}
 Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.github.io/
@@ -81,6 +81,7 @@ Requires: libwebp-devel%{?_isa}
 Requires: libX11-devel%{?_isa}
 Requires: libXpm-devel%{?_isa}
 Requires: zlib-devel%{?_isa}
+Requires: libimagequant-devel%{?_isa}
 
 %description devel
 The gd-devel package contains the development libraries and header
@@ -165,6 +166,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Fri Sep 07 2018 mskalick@redhat.com - 2.2.5-7
+- Add missing requires to libimagequent-devel
+
 * Thu Aug 30 2018 mskalick@redhat.com - 2.2.5-6
 - Use libimagequant library (RHBZ#1468338)
 
