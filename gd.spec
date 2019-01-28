@@ -10,7 +10,6 @@ Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.2.5
 Release:       7%{?prever}%{?short}%{?dist}
-Group:         System Environment/Libraries
 License:       MIT
 URL:           http://libgd.github.io/
 %if 0%{?commit:1}
@@ -61,7 +60,6 @@ browsers. Note that gd is not a paint program.
 %package progs
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Summary:        Utility programs that use libgd
-Group:          Applications/Multimedia
 
 %description progs
 The gd-progs package includes utility programs supplied with gd, a
@@ -70,7 +68,6 @@ graphics library for creating PNG and JPEG images.
 
 %package devel
 Summary:  The development libraries and header files for gd
-Group:    Development/Libraries
 Requires: %{name}%{?_isa} = %{version}-%{release}
 Requires: freetype-devel%{?_isa}
 Requires: fontconfig-devel%{?_isa}
