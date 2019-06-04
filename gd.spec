@@ -27,6 +27,8 @@ Patch2:        gd-2.2.5-upstream.patch
 Patch3:        gd-2.2.5-gdImageBmpPtr-double-free.patch
 # CVE-2019-6977
 Patch4:        gd-2.2.5-heap-based-buffer-overflow.patch
+# CVE-2019-6978
+Patch5:        gd-2.2.5-potential-double-free.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -93,6 +95,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch2 -p1 -b .upstream
 %patch3 -p1 -b .gdImageBmpPtr-free
 %patch4 -p1
+%patch5 -p1
 
 : $(perl config/getver.pl)
 
@@ -167,6 +170,8 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 * Fri Nov 01 2019 odubaj@redhat.com - 2.2.5-9
 - Fixed heap based buffer overflow in gd_color_match.c:gdImageColorMatch() in libgd as used in imagecolormatch()
 - Resolves: RHBZ#1678104 (CVE-2019-6977)
+- Fixed potential double-free in gdImage*Ptr()
+- Resolves: RHBZ#1671391 (CVE-2019-6978)
 
 * Thu Jan 31 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2.2.5-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
