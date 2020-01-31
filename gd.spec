@@ -9,7 +9,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.2.5
-Release:       9%{?prever}%{?short}%{?dist}
+Release:       10%{?prever}%{?short}%{?dist}
 License:       MIT
 URL:           http://libgd.github.io/
 %if 0%{?commit:1}
@@ -29,6 +29,8 @@ Patch3:        gd-2.2.5-gdImageBmpPtr-double-free.patch
 Patch4:        gd-2.2.5-heap-based-buffer-overflow.patch
 # CVE-2019-6978
 Patch5:        gd-2.2.5-potential-double-free.patch
+# NULL POINTER REFERENCE - https://github.com/libgd/libgd/commit/a93eac0e843148dc2d631c3ba80af17e9c8c860f
+Patch6:	       gd-2.2.5-null-pointer.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -96,6 +98,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 %patch3 -p1 -b .gdImageBmpPtr-free
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 : $(perl config/getver.pl)
 
@@ -167,6 +170,10 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Fri Jan 31 2020 Filip Januš <fjanus@redhat.com> - 2.2.5-10
+- Add patch(gd-2.2.5-null-pointer.patch) - fix Null pointer reference in gdImageClone (gdImagePtr src)
+- Resolves: #1599032
+
 * Fri Nov 01 2019 odubaj@redhat.com - 2.2.5-9
 - Fixed heap based buffer overflow in gd_color_match.c:gdImageColorMatch() in libgd as used in imagecolormatch()
 - Resolves: RHBZ#1678104 (CVE-2019-6977)
