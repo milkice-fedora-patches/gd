@@ -39,6 +39,7 @@ BuildRequires: pkgconfig
 BuildRequires: libtool
 BuildRequires: perl-interpreter
 BuildRequires: perl-generators
+BuildRequires: perl(FindBin)
 # for fontconfig/basic test
 BuildRequires: liberation-sans-fonts
 
