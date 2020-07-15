@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.3.0
-Release:       1%{?prever}%{?short}%{?dist}
+Release:       2%{?prever}%{?short}%{?dist}
 License:       MIT
 URL:           http://libgd.github.io/
 %if 0%{?commit:1}
@@ -18,6 +18,7 @@ Source0:       https://github.com/libgd/libgd/releases/download/gd-%{version}/li
 # Missing, temporary workaround, fixed upstream for next version
 Source1:       https://raw.githubusercontent.com/libgd/libgd/gd-%{version}/config/getlib.sh
 
+Patch0:        gd-bug615.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -89,6 +90,7 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 
 %prep
 %setup -q -n libgd-%{version}%{?prever:-%{prever}}
+%patch0 -p1
 install -m 0755 %{SOURCE1} config/
 
 : $(perl config/getver.pl)
@@ -167,6 +169,10 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Wed Jul 15 2020 Remi Collet <remi@remirepo.net> - 2.3.0-2
+- fix gdImageStringFT() fails for empty strings
+  https://github.com/libgd/libgd/issues/615
+
 * Tue Mar 24 2020 Remi Collet <remi@remirepo.net> - 2.3.0-1
 - update to 2.3.0
 - add dependency on libraqm
