@@ -5,7 +5,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.3.0
-Release:       2%{?prever}%{?short}%{?dist}
+Release:       3%{?prever}%{?short}%{?dist}
 License:       MIT
 URL:           http://libgd.github.io/
 %if 0%{?commit:1}
@@ -169,6 +169,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Mon Jul 27 2020 Fedora Release Engineering <releng@fedoraproject.org> - 2.3.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+
 * Wed Jul 15 2020 Remi Collet <remi@remirepo.net> - 2.3.0-2
 - fix gdImageStringFT() fails for empty strings
   https://github.com/libgd/libgd/issues/615
