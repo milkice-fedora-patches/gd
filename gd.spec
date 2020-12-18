@@ -43,6 +43,7 @@ BuildRequires: perl-generators
 BuildRequires: perl(FindBin)
 # for fontconfig/basic test
 BuildRequires: liberation-sans-fonts
+BuildRequires: make
 
 
 %description
