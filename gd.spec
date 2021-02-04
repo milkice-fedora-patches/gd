@@ -4,8 +4,8 @@
 
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
-Version:       2.3.0
-Release:       4%{?prever}%{?short}%{?dist}
+Version:       2.3.1
+Release:       1%{?prever}%{?short}%{?dist}
 License:       MIT
 URL:           http://libgd.github.io/
 %if 0%{?commit:1}
@@ -17,8 +17,6 @@ Source0:       https://github.com/libgd/libgd/releases/download/gd-%{version}/li
 %endif
 # Missing, temporary workaround, fixed upstream for next version
 Source1:       https://raw.githubusercontent.com/libgd/libgd/gd-%{version}/config/getlib.sh
-
-Patch0:        gd-bug615.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -91,7 +89,6 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 
 %prep
 %setup -q -n libgd-%{version}%{?prever:-%{prever}}
-%patch0 -p1
 install -m 0755 %{SOURCE1} config/
 
 : $(perl config/getver.pl)
@@ -139,9 +136,6 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
 %check
 # minor diff in size
 XFAIL_TESTS="gdimagestringft/gdimagestringft_bbox"
-%ifarch s390x
-XFAIL_TESTS="gdimagestring16/gdimagestring16 gdimagestringup16/gdimagestringup16 $XFAIL_TESTS"
-%endif
 
 export XFAIL_TESTS
 
@@ -170,6 +164,12 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Wed Feb 3 2021 Filip Januš <fjanus@redhat.com> - 2.3.1-1
+- Upstream released new version 2.3.1
+- patch bug615 is no more needed - fixed by upstream in release
+- gdimagestring16/gdimagestring16 gdimagestringup16/gdimagestringup16 passed on
+  x390s - XFAIL_TEST definition for x390s is no more necessary
+
 * Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.3.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
