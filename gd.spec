@@ -4,7 +4,7 @@
 
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
-Version:       2.3.1
+Version:       2.3.2
 Release:       1%{?prever}%{?short}%{?dist}
 License:       MIT
 URL:           http://libgd.github.io/
@@ -164,6 +164,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Mon Mar 08 2021 Ondrej Dubaj <odubaj@redhat.com> - 2.3.2-1
+- rebase to version 2.3.2
+
 * Wed Feb 3 2021 Filip Januš <fjanus@redhat.com> - 2.3.1-1
 - Upstream released new version 2.3.1
 - patch bug615 is no more needed - fixed by upstream in release
