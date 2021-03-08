@@ -1,11 +1,17 @@
-%global  with_liq   1
-%global  with_raqm  1
+# Enabled by default
+%bcond_without liq
+%bcond_without raqm
+%bcond_without avif
+
+# Not available in Fedora, only in rpmfusion
+# Also see https://github.com/libgd/libgd/issues/678 segfault
+%bcond_with    heif
 
 
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.3.2
-Release:       1%{?prever}%{?short}%{?dist}
+Release:       2%{?prever}%{?short}%{?dist}
 License:       MIT
 URL:           http://libgd.github.io/
 %if 0%{?commit:1}
@@ -25,11 +31,17 @@ BuildRequires: libjpeg-devel
 BuildRequires: libpng-devel
 BuildRequires: libtiff-devel
 BuildRequires: libwebp-devel
-%if %{with_liq}
+%if %{with liq}
 BuildRequires: libimagequant-devel
 %endif
-%if %{with_raqm}
+%if %{with raqm}
 BuildRequires: libraqm-devel
+%endif
+%if %{with avif}
+BuildRequires: libavif-devel
+%endif
+%if %{with heif}
+BuildRequires: libheif-devel
 %endif
 BuildRequires: libX11-devel
 BuildRequires: libXpm-devel
@@ -74,11 +86,17 @@ Requires: libwebp-devel%{?_isa}
 Requires: libX11-devel%{?_isa}
 Requires: libXpm-devel%{?_isa}
 Requires: zlib-devel%{?_isa}
-%if %{with_liq}
+%if %{with liq}
 Requires: libimagequant-devel%{?_isa}
 %endif
-%if %{with_raqm}
+%if %{with raqm}
 Requires: libraqm-devel
+%endif
+%if %{with avif}
+Requires: libavif-devel
+%endif
+%if %{with heif}
+Requires: libheif-devel
 %endif
 
 
@@ -164,6 +182,10 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Mon Mar  8 2021 Remi Collet <remi@remirepo.net> - 2.3.2-2
+- enable avif support
+- use bcond
+
 * Mon Mar 08 2021 Ondrej Dubaj <odubaj@redhat.com> - 2.3.2-1
 - rebase to version 2.3.2
 
