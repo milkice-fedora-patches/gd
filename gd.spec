@@ -1,8 +1,13 @@
+%if 0%{?rhel}
+%bcond_with liq
+%bcond_with raqm
+%bcond_with avif
+%else
 # Enabled by default
 %bcond_without liq
 %bcond_without raqm
 %bcond_without avif
-
+%endif
 # Not available in Fedora, only in rpmfusion
 # Also see https://github.com/libgd/libgd/issues/678 segfault
 %bcond_with    heif
@@ -11,7 +16,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.3.2
-Release:       2%{?prever}%{?short}%{?dist}
+Release:       3%{?prever}%{?short}%{?dist}
 License:       MIT
 URL:           http://libgd.github.io/
 %if 0%{?commit:1}
@@ -21,8 +26,6 @@ Source0:       libgd-%{version}-%{commit}.tgz
 %else
 Source0:       https://github.com/libgd/libgd/releases/download/gd-%{version}/libgd-%{version}.tar.xz
 %endif
-# Missing, temporary workaround, fixed upstream for next version
-Source1:       https://raw.githubusercontent.com/libgd/libgd/gd-%{version}/config/getlib.sh
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -107,7 +110,6 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 
 %prep
 %setup -q -n libgd-%{version}%{?prever:-%{prever}}
-install -m 0755 %{SOURCE1} config/
 
 : $(perl config/getver.pl)
 
@@ -153,9 +155,10 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
 
 %check
 # minor diff in size
+%if %{with raqm}
 XFAIL_TESTS="gdimagestringft/gdimagestringft_bbox"
-
 export XFAIL_TESTS
+%endif
 
 : Upstream test suite
 make check
@@ -182,6 +185,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Wed Mar 17 2021 Filip Januš <fjanus@redhat.com> - 2.3.2-3
+- Add condition if fedora for packages not available in RHEL
+
 * Mon Mar  8 2021 Remi Collet <remi@remirepo.net> - 2.3.2-2
 - enable avif support
 - use bcond
