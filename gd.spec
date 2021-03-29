@@ -16,7 +16,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.3.2
-Release:       3%{?prever}%{?short}%{?dist}
+Release:       4%{?prever}%{?short}%{?dist}
 License:       MIT
 URL:           http://libgd.github.io/
 %if 0%{?commit:1}
@@ -185,6 +185,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Mon Mar 29 2021 Robert-André Mauchin <zebob.m@gmail.com> - 2.3.2-4
+- Rebuild for libavif soname bump
+
 * Wed Mar 17 2021 Filip Januš <fjanus@redhat.com> - 2.3.2-3
 - Add condition if fedora for packages not available in RHEL
 
