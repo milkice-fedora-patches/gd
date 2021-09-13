@@ -167,6 +167,9 @@ XFAIL_TESTS="gdimagestringft/gdimagestringft_bbox"
 export XFAIL_TESTS
 %endif
 
+# Workaround to https://github.com/libgd/libgd/issues/763
+export TMPDIR=/tmp
+
 : Upstream test suite
 make check
 
