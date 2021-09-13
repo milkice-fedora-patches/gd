@@ -161,12 +161,6 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libgd.a
 
 
 %check
-# minor diff in size
-%if %{with raqm}
-XFAIL_TESTS="gdimagestringft/gdimagestringft_bbox"
-export XFAIL_TESTS
-%endif
-
 # Workaround to https://github.com/libgd/libgd/issues/763
 export TMPDIR=/tmp
 
