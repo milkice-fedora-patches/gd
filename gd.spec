@@ -15,8 +15,8 @@
 
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
-Version:       2.3.2
-Release:       9%{?prever}%{?short}%{?dist}
+Version:       2.3.3
+Release:       1%{?prever}%{?short}%{?dist}
 License:       MIT
 URL:           http://libgd.github.io/
 %if 0%{?commit:1}
@@ -26,6 +26,11 @@ Source0:       libgd-%{version}-%{commit}.tgz
 %else
 Source0:       https://github.com/libgd/libgd/releases/download/gd-%{version}/libgd-%{version}.tar.xz
 %endif
+
+# Needed by PHP see https://github.com/libgd/libgd/pull/766
+Patch0:        libgd-flip.patch
+# Missing header see https://github.com/libgd/libgd/pull/766
+Patch1:        libgd-iostream.patch
 
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -110,6 +115,8 @@ files for gd, a graphics library for creating PNG and JPEG graphics.
 
 %prep
 %setup -q -n libgd-%{version}%{?prever:-%{prever}}
+%patch0 -p1
+%patch1 -p1
 
 : $(perl config/getver.pl)
 
@@ -185,6 +192,11 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Mon Sep 13 2021 Remi Collet <remi@remirepo.net> - 2.3.3-1
+- update to 2.3.3
+- open https://github.com/libgd/libgd/pull/766 missing macros
+- open https://github.com/libgd/libgd/pull/767 missing headers
+
 * Tue Jul 27 2021 Florian Weimer <fweimer@redhat.com> - 2.3.2-9
 - Rebuild again for libavif soname bump
 
