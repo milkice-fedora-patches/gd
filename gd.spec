@@ -16,7 +16,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.3.3
-Release:       1%{?prever}%{?short}%{?dist}
+Release:       2%{?prever}%{?short}%{?dist}
 License:       MIT
 URL:           http://libgd.github.io/
 %if 0%{?commit:1}
@@ -149,6 +149,7 @@ export CFLAGS="$CFLAGS -ffp-contract=off"
 %endif
 
 %configure \
+    --enable-gd-formats \
     --with-tiff=%{_prefix} \
     --disable-rpath
 make %{?_smp_mflags}
@@ -189,6 +190,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Mon Sep 20 2021 Paul Howarth <paul@city-fan.org> - 2.3.3-2
+- Explicitly enable gd/gd2 formats, wanted by perl bindings (#2005916)
+
 * Mon Sep 13 2021 Remi Collet <remi@remirepo.net> - 2.3.3-1
 - update to 2.3.3
 - open https://github.com/libgd/libgd/pull/766 missing macros
