@@ -192,7 +192,7 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
-* Mon Sep 13 2021 Remi Collet <remi@remirepo.net> - 2.3.3-3
+* Fri Nov 19 2021 Remi Collet <remi@remirepo.net> - 2.3.3-3
 - disable libraqm usage, see #2022957
 
 * Mon Sep 20 2021 Paul Howarth <paul@city-fan.org> - 2.3.3-2
