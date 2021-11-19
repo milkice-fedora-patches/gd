@@ -5,9 +5,11 @@
 %else
 # Enabled by default
 %bcond_without liq
-%bcond_without raqm
 %bcond_without avif
 %endif
+# disabled as breaks vertical text
+# See https://bugzilla.redhat.com/2022957
+%bcond_with    raqm
 # Not available in Fedora, only in rpmfusion
 # Also see https://github.com/libgd/libgd/issues/678 segfault
 %bcond_with    heif
@@ -16,7 +18,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.3.2
-Release:       9%{?prever}%{?short}%{?dist}
+Release:       10%{?prever}%{?short}%{?dist}
 License:       MIT
 URL:           http://libgd.github.io/
 %if 0%{?commit:1}
@@ -185,6 +187,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Fri Nov 19 2021 Remi Collet <remi@remirepo.net> - 2.3.2-10
+- disable libraqm usage, see #2022957
+
 * Tue Jul 27 2021 Florian Weimer <fweimer@redhat.com> - 2.3.2-9
 - Rebuild again for libavif soname bump
 
