@@ -18,7 +18,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.3.3
-Release:       3%{?prever}%{?short}%{?dist}
+Release:       4%{?prever}%{?short}%{?dist}
 License:       MIT
 URL:           http://libgd.github.io/
 %if 0%{?commit:1}
@@ -192,6 +192,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Mon Nov 29 2021 Robert-André Mauchin <zebob.m@gmail.com> - 2.3.3-4
+- Rebuild for libavif soname bump
+
 * Fri Nov 19 2021 Remi Collet <remi@remirepo.net> - 2.3.3-3
 - disable libraqm usage, see #2022957
 
