@@ -18,7 +18,7 @@
 Summary:       A graphics library for quick creation of PNG or JPEG images
 Name:          gd
 Version:       2.3.3
-Release:       5%{?prever}%{?short}%{?dist}
+Release:       6%{?prever}%{?short}%{?dist}
 License:       MIT
 URL:           http://libgd.github.io/
 %if 0%{?commit:1}
@@ -145,7 +145,7 @@ CFLAGS="$RPM_OPT_FLAGS -DDEFAULT_FONTPATH='\"\
 CFLAGS="$CFLAGS -msse -mfpmath=sse"
 %endif
 
-%ifarch aarch64 ppc64 ppc64le s390 s390x
+%ifarch aarch64 ppc64 ppc64le s390 s390x riscv64
 # workaround for https://bugzilla.redhat.com/show_bug.cgi?id=1359680
 export CFLAGS="$CFLAGS -ffp-contract=off"
 %endif
@@ -192,6 +192,9 @@ grep %{version} $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gdlib.pc
 
 
 %changelog
+* Wed Jun 01 2022 Milkice Qiu <milkice@milkice.me> - 2.3.3-6
+- Add -ffp-contract=off to CFLAGS for riscv64
+
 * Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2.3.3-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 
